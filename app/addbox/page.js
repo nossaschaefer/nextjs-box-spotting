@@ -17,11 +17,43 @@ export default function AddBoxForm() {
       body: JSON.stringify({
         boxName,
         boxItems: boxItems.split(",").map((item) => item.trim()),
+        boxLocation,
+        boxCategory,
+        boxNotes,
+        boxImage,
       }),
     });
     if (res.ok) {
       setBoxName("");
       setBoxItems("");
+      setBoxLocation("");
+      setBoxCategory("");
+      setBoxNotes("");
+      setBoxImage(null);
+    }
+  }
+
+  async function handleImgUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ml_default");
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/db4c0554x/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+      setBoxImage(data.secure_url); // Save Cloudinary image URL
+    } catch (error) {
+      console.error("Upload failed", error);
     }
   }
 
@@ -42,12 +74,12 @@ export default function AddBoxForm() {
           <label className="text-left mt-6" htmlFor="">
             Add Photo
           </label>
-          {/* <input
+          <input
             className="border-2 border-gray-200 file:rounded-md
          file:text-sm file:font-semibold file:text-blue-700"
             type="file"
             onChange={handleImgUpload}
-          /> */}
+          />
 
           <label htmlFor="boxitems" className="text-left mt-6">
             New Item
