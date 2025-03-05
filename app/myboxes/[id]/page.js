@@ -1,5 +1,5 @@
 async function fetchBox(id) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/boxes/${id}`);
+  const res = await fetch(`/api/boxes/${id}`);
   return res.json();
 }
 

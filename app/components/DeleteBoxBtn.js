@@ -1,14 +1,21 @@
 "use client";
+import { useRouter } from "next/navigation";
 
-export default function DeleteBoxBtn({ boxId }) {
+export default function DeleteBoxBtn({ boxId, onDelete }) {
+  const router = useRouter();
   async function deleteBox() {
     const res = await fetch(`/api/boxes/${boxId}`, { method: "DELETE" });
     if (res.ok) {
-      window.location.reload();
+      onDelete(boxId);
+    } else {
+      console.log("Failed to delete box");
     }
   }
   return (
-    <button onClick={deleteBox} className="border border-blue-500 p-1 rounded">
+    <button
+      onClick={deleteBox}
+      className="border border-blue-500 p-1 rounded mt-2"
+    >
       Delete
     </button>
   );

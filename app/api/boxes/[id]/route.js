@@ -14,7 +14,7 @@ export async function DELETE(req, { params }) {
   await dbConnect();
 
   try {
-    const { id } = params; // Get box ID from the URL
+    const { id } = await params; // Get box ID from the URL
     await Box.findByIdAndDelete(id);
     return NextResponse.json({ message: "Box deleted" }, { status: 200 });
   } catch (error) {
