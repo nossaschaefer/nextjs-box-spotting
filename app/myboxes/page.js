@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import DeleteBoxBtn from "../components/DeleteBoxBtn";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 export default function MyBoxes() {
   const [boxes, setBoxes] = useState([]);
@@ -36,7 +39,7 @@ export default function MyBoxes() {
             key={box._id}
             className="border p-4 border-violet-500 m-2 rounded"
           >
-            <div className="w-[300px] h-[100px] relative overflow-hidden border-2 border-red-400 mb-2">
+            <div className="min-w-[280px] min-h-[100px] relative overflow-hidden border-2 border-red-400 mb-2">
               {box.boxImage && (
                 <Image
                   className="object-cover"
@@ -53,7 +56,12 @@ export default function MyBoxes() {
             <p>Location: {box.boxLocation}</p>
             <p>Category: {box.boxCategory}</p>
             <p>Notes: {box.boxNotes}</p>
-            <DeleteBoxBtn boxId={box._id} onDelete={handleDelete} />
+            <div className="flex flex-row justify-between items-center">
+              <DeleteBoxBtn boxId={box._id} onDelete={handleDelete} />
+              <Link href="/editbox">
+                <FontAwesomeIcon icon={faPencil} />
+              </Link>
+            </div>
           </div>
         ))}
       </div>
