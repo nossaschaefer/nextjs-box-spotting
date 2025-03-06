@@ -13,7 +13,7 @@ export async function POST(req) {
 
   try {
     const data = await req.json();
-    console.log("Received data:", data); // Log the incoming data
+    console.log("Received data:", data);
 
     const newBox = await Box.create(data);
     return NextResponse.json(newBox, { status: 201 });

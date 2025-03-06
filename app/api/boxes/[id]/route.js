@@ -24,3 +24,25 @@ export async function DELETE(req, { params }) {
     );
   }
 }
+
+export async function PUT(req, { params }) {
+  await dbConnect;
+  try {
+    const { id } = params;
+    const updatedData = await req.json();
+
+    const updatedBox = await Box.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
+
+    if (!updatedBox) {
+      return NextResponse.json({ message: "Box not found" }, { status: 404 });
+    }
+    return NextResponse.json(updatedBox);
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error updating box", error },
+      { status: 500 }
+    );
+  }
+}
