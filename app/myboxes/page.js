@@ -1,4 +1,6 @@
 "use client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import DeleteBoxBtn from "../components/DeleteBoxBtn";
@@ -7,6 +9,9 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
 
 export default function MyBoxes() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   const [boxes, setBoxes] = useState([]);
   const [expandedBoxes, setExpandedbox] = useState({});
   const [editBoxId, setEditBoxId] = useState(null);
@@ -63,6 +68,12 @@ export default function MyBoxes() {
       ...prev,
       [boxId]: !prev[boxId],
     }));
+  }
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (!session) {
+    router.push("/login");
+    return null;
   }
 
   return (

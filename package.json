@@ -12,9 +12,11 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
     "mongoose": "^8.10.2",
     "next": "^15.2.1",
+    "next-auth": "^4.24.11",
     "next-cloudinary": "^6.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
