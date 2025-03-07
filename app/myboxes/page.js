@@ -193,7 +193,11 @@ export default function MyBoxes() {
 
             {/* Buttons: Delete & Edit */}
             <div className="flex flex-row justify-between items-center">
-              <DeleteBoxBtn boxId={box._id} onDelete={handleDelete} />
+              <DeleteBoxBtn
+                boxName={box.boxName}
+                boxId={box._id}
+                onDelete={handleDelete}
+              />
 
               {editBoxId === box._id ? (
                 <button

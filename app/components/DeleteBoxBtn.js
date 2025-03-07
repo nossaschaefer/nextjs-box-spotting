@@ -1,12 +1,13 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-export default function DeleteBoxBtn({ boxId, onDelete }) {
+export default function DeleteBoxBtn({ boxId, onDelete, boxName }) {
   const router = useRouter();
   async function deleteBox() {
     const res = await fetch(`/api/boxes/${boxId}`, { method: "DELETE" });
     if (res.ok) {
       onDelete(boxId);
+      alert(`Box ${boxName} deleted.`);
     } else {
       console.log("Failed to delete box");
     }
