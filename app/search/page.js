@@ -1,7 +1,12 @@
 "use client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function Search() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   const [search, setSearch] = useState("");
   const [boxes, setBoxes] = useState([]);
   const [filteredBoxes, setFilteredBoxes] = useState([]);
@@ -29,6 +34,13 @@ export default function Search() {
         box.boxCategory.toLowerCase().includes(value)
     );
     setFilteredBoxes(results);
+  }
+
+  if (status === "loading") return <p>Loading...</p>;
+
+  if (!session) {
+    router.push("/login");
+    return null;
   }
 
   return (
