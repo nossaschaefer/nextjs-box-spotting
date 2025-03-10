@@ -7,6 +7,11 @@ const BoxSchema = new mongoose.Schema({
   boxCategory: { type: String },
   boxNotes: { type: String },
   boxImage: { type: String },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 export default mongoose.models.Box || mongoose.model("Box", BoxSchema);

@@ -14,6 +14,7 @@ export default function AddBoxForm() {
     const res = await fetch("/api/boxes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify({
         boxName,
         boxItems: boxItems.split(",").map((item) => item.trim()),

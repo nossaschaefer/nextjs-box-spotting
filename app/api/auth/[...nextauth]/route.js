@@ -32,6 +32,17 @@ export const authOptions = {
   pages: {
     signIn: "/login",
   },
+  callbacks: {
+    async session({ session }) {
+      await dbConnect();
+      const dbUser = await User.findOne({ email: session.user.email });
+
+      if (dbUser) {
+        session.user.id = dbUser._id.toString();
+      }
+      return session;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);
