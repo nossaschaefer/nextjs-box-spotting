@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import Sort from "../components/Sort";
 
 export default function Search() {
   const { data: session, status } = useSession();
@@ -54,6 +55,9 @@ export default function Search() {
         onChange={handleSearch}
         className="border-2  border-blue-500 rounded placeholder:text-gray-400 mt-2"
       />
+
+      <Sort filteredBoxes={filteredBoxes} setFilteredBoxes={setFilteredBoxes} />
+
       <div className="mt-4">
         {filteredBoxes.length === 0 ? <p>No results found</p> : null}
         {filteredBoxes.map((box) => (
@@ -70,6 +74,7 @@ export default function Search() {
           </div>
         ))}
       </div>
+
       <div className="mb-20"></div>
     </div>
   );
