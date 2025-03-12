@@ -1,7 +1,12 @@
 "use client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function AddBoxForm() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   const [boxName, setBoxName] = useState("");
   const [boxItems, setBoxItems] = useState("");
   const [boxLocation, setBoxLocation] = useState("");
@@ -56,6 +61,12 @@ export default function AddBoxForm() {
     } catch (error) {
       console.error("Upload failed", error);
     }
+  }
+
+  if (status === "loading") return <p>Loading...</p>;
+  if (!session) {
+    router.push("/login");
+    return null;
   }
 
   return (

@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -29,37 +30,41 @@ export default function LoginPage() {
 
   return (
     <div className="login-form">
-      <h1>Login</h1>
+      <h1 className="text-xl text-center mt-8">Login to Box Spotting</h1>
       {error && <p className="error">{error}</p>}
-      <form onSubmit={handleLogin}>
-        <div>
+      <form onSubmit={handleLogin} className="flex flex-col m-12">
+        <div className="flex flex-col">
           <label>Email</label>
           <input
+            className="border-2 rounded mb-4"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
-        <div>
+        <div className="flex flex-col">
           <label>Password</label>
           <input
+            className="border-2 rounded mb-4"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
-        <div>
-          <label>Username</label>
-          <input
-            type="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+        <button
+          className="border-2 border-violet-600 mt-4 rounded"
+          type="submit"
+        >
+          Login
+        </button>
+        <div className="flex flex-row text-xs mt-8 justify-center">
+          <p className="mr-1">New to Box Spotting?</p>
+          <Link className="text-violet-600" href="/signup">
+            Create an account
+          </Link>
         </div>
-        <button type="submit">Login</button>
       </form>
     </div>
   );

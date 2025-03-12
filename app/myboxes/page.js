@@ -84,9 +84,9 @@ export default function MyBoxes() {
         {boxes.map((box) => (
           <div
             key={box._id}
-            className="border p-4 border-violet-500 m-2 rounded"
+            className="border p-4 border-violet-500 m-2 rounded bg-white"
           >
-            <div className="min-w-[280px] min-h-[100px] relative overflow-hidden border-2 border-red-400 mb-2">
+            <div className="min-w-[280px] min-h-[100px] relative overflow-hidden border-2 border-red-400 mb-2 bg-white">
               {box.boxImage && (
                 <Image
                   className="object-cover"
@@ -213,16 +213,16 @@ export default function MyBoxes() {
               {editBoxId === box._id ? (
                 <button
                   onClick={handleSave}
-                  className="bg-green-500 text-white p-2"
+                  className="bg-green-500 text-white p-2 rounded"
                 >
                   <FontAwesomeIcon icon={faSave} /> Save
                 </button>
               ) : (
                 <button
                   onClick={() => handleEdit(box)}
-                  className="bg-blue-500 text-white p-2"
+                  className="bg-blue-500 text-white p-2 rounded"
                 >
-                  <FontAwesomeIcon icon={faPencil} /> Edit
+                  <FontAwesomeIcon icon={faPencil} />
                 </button>
               )}
             </div>

@@ -3,7 +3,6 @@
 import "./globals.css";
 import TabBar from "./components/TabBar";
 import { SessionProvider } from "next-auth/react";
-import Link from "next/link";
 import AuthLink from "./components/AuthLink";
 
 export default function Layout({ children }) {
