@@ -41,16 +41,6 @@ export default function SignUp() {
       <h1 className="text-xl text-center mt-8">Sign up to Box Spotting</h1>
       <form className="flex flex-col m-12" onSubmit={handleSubmit}>
         <div className="flex flex-col">
-          <label>Email</label>
-          <input
-            className="border-2 rounded mb-4"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="flex flex-col">
           <label>Username</label>
           <input
             className="border-2 rounded mb-4"
@@ -60,6 +50,17 @@ export default function SignUp() {
             required
           />
         </div>
+        <div className="flex flex-col">
+          <label>Email</label>
+          <input
+            className="border-2 rounded mb-4"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
         <div className="flex flex-col mb-4">
           <label>Password</label>
           <input

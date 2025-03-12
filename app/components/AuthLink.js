@@ -10,11 +10,15 @@ export default function AuthLink() {
 
   if (session) {
     return (
-      <button onClick={handleLogOut} className="text-white">
+      <button onClick={handleLogOut} className="text-white pr-4">
         Log out
       </button>
     );
   } else {
-    return <Link href="/login">Log in</Link>;
+    return (
+      <Link className="text-white pr-4" href="/login">
+        Log in
+      </Link>
+    );
   }
 }
