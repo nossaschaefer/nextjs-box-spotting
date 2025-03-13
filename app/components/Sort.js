@@ -3,25 +3,48 @@
 import { useState } from "react";
 
 export default function Sort({ filteredBoxes, setFilteredBoxes }) {
-  const [isAscending, setIsAscending] = useState(true);
+  const [isAscending, setIsAscending] = useState(false);
+  const [sortCriteria, setSortCriteria] = useState("boxName");
 
-  function handleAlphabeticSort() {
+  function sortBoxes(criteria, ascending) {
     const sortedBoxes = [...filteredBoxes].sort((a, b) =>
       isAscending
-        ? a.boxName.localeCompare(b.boxName)
-        : b.boxName.localeCompare(a.boxName)
+        ? a[criteria].localeCompare(b[criteria])
+        : b[criteria].localeCompare(a[criteria])
     );
     setFilteredBoxes(sortedBoxes);
+  }
+
+  function handleSortChange(event) {
+    const newCriteria = event.target.value;
+    setSortCriteria(newCriteria);
+    setIsAscending(false);
+    sortBoxes(newCriteria, false);
+  }
+
+  function toggleSortOrder() {
     setIsAscending(!isAscending);
+    sortBoxes(sortCriteria, !isAscending);
   }
 
   return (
-    <div>
+    <div className="flex gap-2 items-center">
+      <label htmlFor="sort">Sort by</label>
+      <select
+        id="sort"
+        className="border p-1"
+        value={sortCriteria}
+        onChange={handleSortChange}
+      >
+        <option value="boxName">Box Name</option>
+        <option value="boxCategory">Category</option>
+      </select>
+
       <button
         className="border-2 border-red-300 mt-2 ml-2"
-        onClick={handleAlphabeticSort}
+        onClick={toggleSortOrder}
       >
-        Sort by boxname {isAscending ? "↑" : "↓"}
+        {isAscending ? "↑" : "↓"}
       </button>
     </div>
   );

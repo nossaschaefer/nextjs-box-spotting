@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Sort from "../components/Sort";
+import Filter from "../components/Filter";
 
 export default function Search() {
   const { data: session, status } = useSession();
@@ -57,6 +58,7 @@ export default function Search() {
       />
 
       <Sort filteredBoxes={filteredBoxes} setFilteredBoxes={setFilteredBoxes} />
+      <Filter boxes={boxes} setFilteredBoxes={setFilteredBoxes} />
 
       <div className="mt-4">
         {filteredBoxes.length === 0 ? <p>No results found</p> : null}

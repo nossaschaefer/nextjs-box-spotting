@@ -11,7 +11,7 @@ export default function Layout({ children }) {
     <SessionProvider>
       <html lang="en">
         <head>
-          <link rel="icon" href="/icon.ico" sizes="any" />
+          <link rel="icon" href="/icon.ico" sizes="any" priority={false} />
         </head>
         <body className="bg-gray-100 text-gray-900">
           <header className=" bg-violet-800 text-white text-center flex flex-row justify-between items-center">
