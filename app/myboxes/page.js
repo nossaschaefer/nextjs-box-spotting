@@ -50,6 +50,7 @@ export default function MyBoxes() {
     const updatedBox = {
       ...editedBox,
       boxItems: editedBox.boxItemsInput.split(",").map((item) => item.trim()),
+      boxImage: editedBox.boxImage,
     };
 
     const res = await fetch(`/api/boxes/${editBoxId}`, {
@@ -70,6 +71,30 @@ export default function MyBoxes() {
     }));
   }
 
+  async function handleFileUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ml_default");
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/db4c0554x/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+      setEditedBox((prev) => ({ ...prev, boxImage: data.secure_url }));
+    } catch (error) {
+      console.log("Upload failed", error);
+    }
+  }
+
   if (status === "loading") return <p>Loading...</p>;
   if (!session) {
     router.push("/login");
@@ -80,21 +105,57 @@ export default function MyBoxes() {
     <>
       <div>
         <h1 className="text-2xl ml-2">My Boxes</h1>
-        {boxes.length === 0 ? <p>No boxes yet</p> : null}
+        {boxes.length === 0 ? (
+          <p className="p-2 mt-4">No boxes yet - add a box!</p>
+        ) : null}
         {boxes.map((box) => (
           <div
             key={box._id}
             className="border p-4 border-violet-500 m-2 rounded bg-white"
           >
+            {/* Editable Image */}
             <div className="min-w-[280px] min-h-[100px] relative overflow-hidden border-2 border-red-400 mb-2 bg-white">
-              {box.boxImage && (
-                <Image
-                  className="object-cover"
-                  src={box.boxImage}
-                  fill
-                  alt="Box Image"
-                  priority
-                />
+              {editBoxId === box._id ? (
+                <div className="flex flex-col">
+                  {editedBox.boxImage ? (
+                    <div className="absolute w-full h-full">
+                      <Image
+                        className="object-cover"
+                        src={editedBox.boxImage}
+                        fill
+                        alt="Box Image"
+                        priority
+                      />
+                      <button
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                        className="absolute top-2 right-2 bg-blue-500 text-white p-1 rounded border border-red-500"
+                      >
+                        <FontAwesomeIcon icon={faPencil} />
+                      </button>
+                      <input
+                        type="file"
+                        id="fileInput"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                      />
+                    </div>
+                  ) : (
+                    <p>No image uploaded</p>
+                  )}
+                </div>
+              ) : (
+                box.boxImage && (
+                  <Image
+                    className="object-cover"
+                    src={box.boxImage}
+                    fill
+                    alt="Box Image"
+                    priority
+                  />
+                )
               )}
             </div>
 
@@ -107,7 +168,7 @@ export default function MyBoxes() {
                   name="boxName"
                   value={editedBox.boxName}
                   onChange={handleChange}
-                  className="border w-full p-1"
+                  className="border w-full p-1 my-1"
                 />
               </div>
             ) : (
@@ -123,7 +184,7 @@ export default function MyBoxes() {
                   name="boxItemsInput"
                   value={editedBox.boxItemsInput || ""}
                   onChange={handleChange}
-                  className="border w-full p-1"
+                  className="border w-full p-1 my-1"
                 />
               </div>
             ) : (
@@ -153,7 +214,7 @@ export default function MyBoxes() {
                   name="boxLocation"
                   value={editedBox.boxLocation}
                   onChange={handleChange}
-                  className="border w-full p-1"
+                  className="border w-full p-1 my-1"
                 />
               </div>
             ) : (
@@ -172,7 +233,7 @@ export default function MyBoxes() {
                   name="boxCategory"
                   value={editedBox.boxCategory}
                   onChange={handleChange}
-                  className="border w-full p-1"
+                  className="border w-full p-1 my-1"
                 />
               </div>
             ) : (
@@ -192,7 +253,7 @@ export default function MyBoxes() {
                   name="boxNotes"
                   value={editedBox.boxNotes}
                   onChange={handleChange}
-                  className="border w-full p-1"
+                  className="border w-full p-1 my-1"
                 />
               </div>
             ) : (

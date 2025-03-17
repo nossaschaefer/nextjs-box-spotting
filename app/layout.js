@@ -27,7 +27,7 @@ export default function Layout({ children }) {
             </div>
             <AuthLink />
           </header>
-          <main className="p-4">{children}</main>
+          <main className="px-4">{children}</main>
           <TabBar />
         </body>
       </html>

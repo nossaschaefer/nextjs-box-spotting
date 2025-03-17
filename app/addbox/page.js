@@ -13,6 +13,7 @@ export default function AddBoxForm() {
   const [boxCategory, setBoxCategory] = useState("");
   const [boxNotes, setBoxNotes] = useState("");
   const [boxImage, setBoxImage] = useState(null);
+  const [fileName, setFileName] = useState("Choose file");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -36,12 +37,15 @@ export default function AddBoxForm() {
       setBoxCategory("");
       setBoxNotes("");
       setBoxImage(null);
+      setFileName("Choose file");
     }
   }
 
   async function handleImgUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
+
+    setFileName(file.name);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -71,9 +75,12 @@ export default function AddBoxForm() {
 
   return (
     <>
-      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
-        <div className="flex flex-col gap-1 border-2 border-blue-500 p-2 rounded">
-          <form onSubmit={handleSubmit} className="flex flex-col">
+      <div className="flex  justify-center h-[calc(100vh-4rem)] ">
+        <div className="flex flex-col gap-1 min-w-80">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col border-2 border-blue-500 p-2 rounded mt-4"
+          >
             <label htmlFor="boxname" className="text-left  mt-6">
               Box Name
             </label>
@@ -87,12 +94,15 @@ export default function AddBoxForm() {
             <label className="text-left mt-6" htmlFor="">
               Add Photo
             </label>
-            <input
-              className="border-2 border-gray-200 file:rounded-md
-         file:text-sm file:font-semibold file:text-blue-700"
-              type="file"
-              onChange={handleImgUpload}
-            />
+            <label className="cursor-pointer border-2 border-gray-200  px-4 min-w-48 bg-white overflow-hidden text-ellipsis title={filename} whitespace-nowrap">
+              {fileName}
+              <input
+                className="border-2 border-gray-200 
+         file:text-sm file:font-semibold file:text-blue-700 hidden"
+                type="file"
+                onChange={handleImgUpload}
+              />
+            </label>
 
             <label htmlFor="boxitems" className="text-left mt-6">
               New Item
@@ -102,6 +112,7 @@ export default function AddBoxForm() {
               onChange={(e) => setBoxItems(e.target.value)}
               placeholder="Items (comma separated)"
               required
+              className="border-2 border-gray-200 px-4"
             />
 
             <label htmlFor="boxlocation" className="text-left mt-6">

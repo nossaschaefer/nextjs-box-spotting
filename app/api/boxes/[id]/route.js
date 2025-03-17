@@ -54,7 +54,7 @@ export async function DELETE(req, { params }) {
 export async function PUT(req, { params }) {
   await dbConnect();
   try {
-    const { id } = params;
+    const { id } = await params;
     const updatedData = await req.json();
 
     const updatedBox = await Box.findByIdAndUpdate(id, updatedData, {
