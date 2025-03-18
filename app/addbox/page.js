@@ -32,13 +32,6 @@ export default function AddBoxForm() {
     });
     if (res.ok) {
       router.push("/myboxes");
-      // setBoxName("");
-      // setBoxItems("");
-      // setBoxLocation("");
-      // setBoxCategory("");
-      // setBoxNotes("");
-      // setBoxImage(null);
-      // setFileName("Choose file");
     }
   }
 

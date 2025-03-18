@@ -5,7 +5,6 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
 export const authOptions = {
-  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -44,6 +43,7 @@ export const authOptions = {
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 // console.log("NEXTAUTH_SECRET:", process.env.NEXTAUTH_SECRET);
 

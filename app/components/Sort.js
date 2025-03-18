@@ -6,7 +6,7 @@ export default function Sort({ filteredBoxes, setFilteredBoxes }) {
   const [isAscending, setIsAscending] = useState(false);
   const [sortCriteria, setSortCriteria] = useState("boxName");
 
-  function sortBoxes(criteria, ascending) {
+  function sortBoxes(criteria, isAscending) {
     const sortedBoxes = [...filteredBoxes].sort((a, b) =>
       isAscending
         ? a[criteria].localeCompare(b[criteria])
