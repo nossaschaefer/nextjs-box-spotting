@@ -31,13 +31,14 @@ export default function AddBoxForm() {
       }),
     });
     if (res.ok) {
-      setBoxName("");
-      setBoxItems("");
-      setBoxLocation("");
-      setBoxCategory("");
-      setBoxNotes("");
-      setBoxImage(null);
-      setFileName("Choose file");
+      router.push("/myboxes");
+      // setBoxName("");
+      // setBoxItems("");
+      // setBoxLocation("");
+      // setBoxCategory("");
+      // setBoxNotes("");
+      // setBoxImage(null);
+      // setFileName("Choose file");
     }
   }
 

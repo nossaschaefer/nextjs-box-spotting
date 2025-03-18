@@ -7,6 +7,8 @@ import DeleteBoxBtn from "../components/DeleteBoxBtn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
+import ConfirmModal from "../components/ConfirmModal";
+import SuccessModal from "../components/SuccessModal";
 
 export default function MyBoxes() {
   const { data: session, status } = useSession();
@@ -16,6 +18,12 @@ export default function MyBoxes() {
   const [expandedBoxes, setExpandedbox] = useState({});
   const [editBoxId, setEditBoxId] = useState(null);
   const [editedBox, setEditedBox] = useState({});
+  const [modal, setModal] = useState({
+    type: "",
+    visible: false,
+    boxId: null,
+    message: "",
+  });
 
   useEffect(() => {
     async function fetchBoxes() {
@@ -31,10 +39,36 @@ export default function MyBoxes() {
     fetchBoxes();
   }, []);
 
-  const handleDelete = (deletedBoxId) => {
-    setBoxes((prevBoxes) =>
-      prevBoxes.filter((box) => box._id !== deletedBoxId)
-    );
+  const handleDelete = async () => {
+    const boxId = modal.boxId;
+    try {
+      const res = await fetch(`/api/boxes/${boxId}`, { method: "DELETE" });
+      if (res.ok) {
+        setBoxes((prevBoxes) => prevBoxes.filter((box) => box._id !== boxId));
+        setModal({
+          type: "success",
+          visible: true,
+          message: "Box successfully deleted",
+        });
+      } else {
+        throw new Error("Failed to delete box");
+      }
+    } catch (error) {
+      console.error(error);
+      setModal({
+        type: "error",
+        visible: true,
+        message: "Error deleting the box",
+      });
+    }
+  };
+
+  const confirmDelete = (boxId) => {
+    setModal({ type: "confirm", visible: true, boxId });
+  };
+
+  const cancelDelete = () => {
+    setModal({ type: "", visible: false, boxId: null });
   };
 
   function handleEdit(box) {
@@ -104,7 +138,7 @@ export default function MyBoxes() {
   return (
     <>
       <div>
-        <h1 className="text-2xl ml-2">My Boxes</h1>
+        <h1 className="text-2xl ml-2 mt-4">My Boxes</h1>
         {boxes.length === 0 ? (
           <p className="p-2 mt-4">No boxes yet - add a box!</p>
         ) : null}
@@ -268,7 +302,7 @@ export default function MyBoxes() {
               <DeleteBoxBtn
                 boxName={box.boxName}
                 boxId={box._id}
-                onDelete={handleDelete}
+                onDelete={() => confirmDelete(box._id)}
               />
 
               {editBoxId === box._id ? (
@@ -289,6 +323,31 @@ export default function MyBoxes() {
             </div>
           </div>
         ))}
+
+        {/* Modals */}
+        {modal.type === "confirm" && (
+          <ConfirmModal
+            isOpen={modal.visible}
+            onClose={cancelDelete}
+            onConfirm={handleDelete}
+            message="Are you sure you want to delete this box?"
+          />
+        )}
+        {modal.type === "success" && (
+          <SuccessModal
+            isOpen={modal.visible}
+            onClose={() => setModal({ type: "", visible: false })}
+            message="Box successfully deleted"
+          />
+        )}
+
+        {modal.type === "error" && (
+          <SuccessModal
+            isOpen={modal.visible}
+            onClose={() => setModal({ type: "", visible: false })}
+            message="Error deleting the box"
+          />
+        )}
       </div>
       <div className="mb-20"></div>
     </>
