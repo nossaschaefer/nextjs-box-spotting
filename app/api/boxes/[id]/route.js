@@ -12,7 +12,6 @@ export async function GET(req, { params }) {
 }
 
 export async function DELETE(req, { params }) {
-  // console.log("DELETE request received for box ID:", params.id);
   await dbConnect();
 
   try {
@@ -56,6 +55,24 @@ export async function PUT(req, { params }) {
   try {
     const { id } = await params;
     const updatedData = await req.json();
+
+    const existingBox = await Box.findById(id);
+    if (!existingBox) {
+      return NextResponse.json({ message: "Box not found" }, { status: 404 });
+    }
+
+    if (updatedData.boxImage && updatedData.boxImage !== existingBox.boxImage) {
+      try {
+        const fileName = existingBox.boxImage.split("/").slice(-1).join();
+        const publicId = fileName.slice(0, fileName.lastIndexOf("."));
+        console.log("Public ID:", publicId);
+        cloudinary.uploader
+          .destroy(publicId)
+          .then((result) => console.log(result));
+      } catch (cloudinaryError) {
+        console.error("Error deleting image from Cloudinary:", cloudinaryError);
+      }
+    }
 
     const updatedBox = await Box.findByIdAndUpdate(id, updatedData, {
       new: true,

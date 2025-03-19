@@ -177,7 +177,24 @@ export default function MyBoxes() {
                       />
                     </div>
                   ) : (
-                    <p>No image uploaded</p>
+                    <div>
+                      <button
+                        onClick={() =>
+                          document.getElementById("fileInput").click()
+                        }
+                        className="absolute top-2 right-2 bg-blue-500 text-white p-1 rounded border border-red-500"
+                      >
+                        <FontAwesomeIcon icon={faPencil} />
+                      </button>
+                      <input
+                        type="file"
+                        id="fileInput"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                      />
+                      <p>No image uploaded</p>
+                    </div>
                   )}
                 </div>
               ) : (
