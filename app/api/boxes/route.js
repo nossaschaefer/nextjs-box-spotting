@@ -13,7 +13,8 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const boxes = await Box.find({ user: session.user.id });
+  const boxes = await Box.find({ user: session.user.id }).sort({ _id: -1 });
+  // console.log(boxes.toReversed());
   return NextResponse.json(boxes);
 }
 
