@@ -38,6 +38,7 @@ export default function Sort({ filteredBoxes, setFilteredBoxes }) {
       >
         <option value="boxName">Box Name</option>
         <option value="boxCategory">Category</option>
+        <option value="boxLocation">Location</option>
       </select>
 
       <button

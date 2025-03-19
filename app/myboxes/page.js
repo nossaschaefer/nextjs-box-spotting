@@ -138,7 +138,7 @@ export default function MyBoxes() {
   return (
     <>
       <div>
-        <h1 className="text-2xl ml-2 mt-4">My Boxes</h1>
+        <h1 className="text-2xl ml-2 mt-4">{boxes.length} Boxes</h1>
         {boxes.length === 0 ? (
           <p className="p-2 mt-4">No boxes yet - add a box!</p>
         ) : null}
