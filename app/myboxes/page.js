@@ -7,6 +7,7 @@ import DeleteBoxBtn from "../components/DeleteBoxBtn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import ConfirmModal from "../components/ConfirmModal";
 import SuccessModal from "../components/SuccessModal";
 
@@ -24,6 +25,7 @@ export default function MyBoxes() {
     boxId: null,
     message: "",
   });
+  const [activeBoxId, setActiveBoxId] = useState(null);
 
   useEffect(() => {
     async function fetchBoxes() {
@@ -129,6 +131,10 @@ export default function MyBoxes() {
     }
   }
 
+  const toggleModal = (boxId) => {
+    setActiveBoxId(activeBoxId === boxId ? null : boxId);
+  };
+
   if (status === "loading") return <p>Loading...</p>;
   if (!session) {
     router.push("/login");
@@ -147,8 +153,48 @@ export default function MyBoxes() {
             key={box._id}
             className="border p-4 border-violet-500 m-2 rounded bg-white"
           >
+            {/* Editable Box Name */}
+            {editBoxId === box._id ? (
+              <div className="flex flex-row items-center">
+                <span className="font-bold pr-2 ">Name</span>
+                <input
+                  type="text"
+                  name="boxName"
+                  value={editedBox.boxName}
+                  onChange={handleChange}
+                  className="border w-full p-1 my-1"
+                />
+              </div>
+            ) : (
+              <div className="flex flex-row justify-between items-center">
+                <h2 className="text-xl text-indigo-500">{box.boxName}</h2>
+                <div className="relative">
+                  <button onClick={() => toggleModal(box._id)}>
+                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                  </button>
+
+                  {activeBoxId === box._id && (
+                    <div className="flex flex-col bg-white absolute right-0  p-2 z-10 shadow-lg rounded">
+                      <button
+                        onClick={() => handleEdit(box)}
+                        className="text-black flex flex-row items-center "
+                      >
+                        <FontAwesomeIcon icon={faPencil} className="mr-2" />
+                        Edit
+                      </button>
+                      <DeleteBoxBtn
+                        boxName={box.boxName}
+                        boxId={box._id}
+                        onDelete={() => confirmDelete(box._id)}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Editable Image */}
-            <div className="min-w-[280px] min-h-[100px] relative overflow-hidden border-2 border-red-400 mb-2 bg-white">
+            <div className="min-w-[280px] min-h-[100px] relative overflow-hidden border-2 border-red-400 mb-2 bg-white mt-2">
               {editBoxId === box._id ? (
                 <div className="flex flex-col">
                   {editedBox.boxImage ? (
@@ -209,22 +255,6 @@ export default function MyBoxes() {
                 )
               )}
             </div>
-
-            {/* Editable Box Name */}
-            {editBoxId === box._id ? (
-              <div className="flex flex-row items-center">
-                <span className="font-bold pr-2 ">Name</span>
-                <input
-                  type="text"
-                  name="boxName"
-                  value={editedBox.boxName}
-                  onChange={handleChange}
-                  className="border w-full p-1 my-1"
-                />
-              </div>
-            ) : (
-              <h2 className="text-xl text-indigo-500">{box.boxName}</h2>
-            )}
 
             {/* Editable Items */}
             {editBoxId === box._id ? (
@@ -314,27 +344,14 @@ export default function MyBoxes() {
               </p>
             )}
 
-            {/* Buttons: Delete & Edit */}
+            {/* Button: Save (when in edit mode)*/}
             <div className="flex flex-row justify-between items-center">
-              <DeleteBoxBtn
-                boxName={box.boxName}
-                boxId={box._id}
-                onDelete={() => confirmDelete(box._id)}
-              />
-
-              {editBoxId === box._id ? (
+              {editBoxId === box._id && (
                 <button
                   onClick={handleSave}
                   className="bg-green-500 text-white p-2 rounded"
                 >
                   <FontAwesomeIcon icon={faSave} /> Save
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleEdit(box)}
-                  className="bg-blue-500 text-white p-2 rounded"
-                >
-                  <FontAwesomeIcon icon={faPencil} />
                 </button>
               )}
             </div>
