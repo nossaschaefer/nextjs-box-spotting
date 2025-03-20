@@ -98,6 +98,7 @@ export default function MyBoxes() {
       setBoxes(boxes.map((box) => (box._id === editBoxId ? updatedBox : box)));
       setEditBoxId(null);
     }
+    setActiveBoxId(null);
   }
 
   function toggleExpand(boxId) {
@@ -194,26 +195,29 @@ export default function MyBoxes() {
             )}
 
             {/* Editable Image */}
-            <div className="min-w-[280px] min-h-[100px] relative overflow-hidden border-2 border-red-400 mb-2 bg-white mt-2">
-              {editBoxId === box._id ? (
-                <div className="flex flex-col">
-                  {editedBox.boxImage ? (
+            {(editBoxId === box._id &&
+              editedBox.boxImage &&
+              editedBox.boxImage.trim() !== "") ||
+            (box.boxImage && box.boxImage.trim() !== "") ? (
+              <div className="relative overflow-hidden  mb-2 bg-white mt-2">
+                {editBoxId === box._id ? (
+                  <div className="flex flex-col min-w-[280px] min-h-[100px] border-2 border-red-400 overflow-hidden">
                     <div className="absolute w-full h-full">
-                      <Image
-                        className="object-cover"
-                        src={editedBox.boxImage}
-                        fill
-                        alt="Box Image"
-                        priority
-                      />
-                      <button
-                        onClick={() =>
-                          document.getElementById("fileInput").click()
-                        }
-                        className="absolute top-2 right-2 bg-blue-500 text-white p-1 rounded border border-red-500"
+                      <label
+                        htmlFor="fileInput"
+                        className="cursor-pointer w-full h-full block"
                       >
-                        <FontAwesomeIcon icon={faPencil} />
-                      </button>
+                        {editedBox.boxImage &&
+                          editedBox.boxImage.trim() !== "" && (
+                            <Image
+                              className="object-cover"
+                              src={editedBox.boxImage}
+                              fill
+                              alt="Box Image"
+                              priority
+                            />
+                          )}
+                      </label>
                       <input
                         type="file"
                         id="fileInput"
@@ -222,39 +226,24 @@ export default function MyBoxes() {
                         className="hidden"
                       />
                     </div>
-                  ) : (
-                    <div>
-                      <button
-                        onClick={() =>
-                          document.getElementById("fileInput").click()
-                        }
-                        className="absolute top-2 right-2 bg-blue-500 text-white p-1 rounded border border-red-500"
-                      >
-                        <FontAwesomeIcon icon={faPencil} />
-                      </button>
-                      <input
-                        type="file"
-                        id="fileInput"
-                        accept="image/*"
-                        onChange={handleFileUpload}
-                        className="hidden"
-                      />
-                      <p>No image uploaded</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col min-w-[280px] min-h-[100px] border-2 border-red-400 overflow-hidden">
+                    <div className="absolute w-full h-full">
+                      {box.boxImage && box.boxImage.trim() !== "" && (
+                        <Image
+                          className="object-cover"
+                          src={box.boxImage}
+                          fill
+                          alt="Box Image"
+                          priority
+                        />
+                      )}
                     </div>
-                  )}
-                </div>
-              ) : (
-                box.boxImage && (
-                  <Image
-                    className="object-cover"
-                    src={box.boxImage}
-                    fill
-                    alt="Box Image"
-                    priority
-                  />
-                )
-              )}
-            </div>
+                  </div>
+                )}
+              </div>
+            ) : null}
 
             {/* Editable Items */}
             {editBoxId === box._id ? (
@@ -345,7 +334,7 @@ export default function MyBoxes() {
             )}
 
             {/* Button: Save (when in edit mode)*/}
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row justify-end mt-2">
               {editBoxId === box._id && (
                 <button
                   onClick={handleSave}
