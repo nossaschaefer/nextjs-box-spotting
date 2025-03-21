@@ -200,61 +200,62 @@ export default function MyBoxes() {
             )}
 
             {/* Editable Image */}
-            {(editBoxId === box._id &&
-              editedBox.boxImage &&
-              editedBox.boxImage.trim() !== "") ||
-            (box.boxImage && box.boxImage.trim() !== "") ? (
-              <div className="relative overflow-hidden  mb-2 bg-white mt-2">
-                {editBoxId === box._id ? (
-                  <div className="flex flex-col min-w-[280px] min-h-[100px] border-2 border-red-400 overflow-hidden">
-                    <div className="absolute w-full h-full">
-                      <label
-                        htmlFor="fileInput"
-                        className="cursor-pointer w-full h-full block"
-                      >
-                        {isUploading ? (
-                          <div className="flex justify-center items-center">
-                            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-indigo-500 mt-8"></div>
-                          </div>
-                        ) : (
-                          editedBox.boxImage &&
-                          editedBox.boxImage.trim() !== "" && (
-                            <Image
-                              className="object-cover"
-                              src={editedBox.boxImage}
-                              fill
-                              alt="Box Image"
-                              priority
-                            />
-                          )
-                        )}
-                      </label>
-                      <input
-                        type="file"
-                        id="fileInput"
-                        accept="image/*"
-                        onChange={handleFileUpload}
-                        className="hidden"
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex flex-col min-w-[280px] min-h-[100px] border-2 border-red-400 overflow-hidden">
-                    <div className="absolute w-full h-full">
-                      {box.boxImage && box.boxImage.trim() !== "" && (
+
+            {editBoxId === box._id ? (
+              <div className="relative overflow-hidden  mb-2 bg-white mt-2 border-2 border-red-400">
+                <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
+                  <div className="absolute w-full h-full">
+                    <label
+                      htmlFor="fileInput"
+                      className="cursor-pointer w-full h-full block"
+                    >
+                      {isUploading ? (
+                        <div className="flex justify-center items-center">
+                          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-indigo-500 mt-8"></div>
+                        </div>
+                      ) : editedBox.boxImage &&
+                        editedBox.boxImage.trim() !== "" ? (
                         <Image
                           className="object-cover"
-                          src={box.boxImage}
+                          src={editedBox.boxImage}
                           fill
                           alt="Box Image"
                           priority
                         />
+                      ) : (
+                        <div className="flex items-center justify-center w-full h-full text-gray-500">
+                          Click to upload an image
+                        </div>
                       )}
+                    </label>
+                    <input
+                      type="file"
+                      id="fileInput"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              box.boxImage &&
+              box.boxImage.trim() !== "" && (
+                <div className="relative overflow-hidden  mb-2 bg-white mt-2 border-2 border-red-400">
+                  <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
+                    <div className="absolute w-full h-full">
+                      <Image
+                        className="object-cover"
+                        src={box.boxImage}
+                        fill
+                        alt="Box Image"
+                        priority
+                      />
                     </div>
                   </div>
-                )}
-              </div>
-            ) : null}
+                </div>
+              )
+            )}
 
             {/* Editable Items */}
             {editBoxId === box._id ? (
