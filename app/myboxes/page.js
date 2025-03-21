@@ -26,6 +26,7 @@ export default function MyBoxes() {
     message: "",
   });
   const [activeBoxId, setActiveBoxId] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     async function fetchBoxes() {
@@ -112,6 +113,8 @@ export default function MyBoxes() {
     const file = e.target.files[0];
     if (!file) return;
 
+    setIsUploading(true);
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "ml_default");
@@ -129,6 +132,8 @@ export default function MyBoxes() {
       setEditedBox((prev) => ({ ...prev, boxImage: data.secure_url }));
     } catch (error) {
       console.log("Upload failed", error);
+    } finally {
+      setIsUploading(false);
     }
   }
 
@@ -207,7 +212,12 @@ export default function MyBoxes() {
                         htmlFor="fileInput"
                         className="cursor-pointer w-full h-full block"
                       >
-                        {editedBox.boxImage &&
+                        {isUploading ? (
+                          <div className="flex justify-center items-center">
+                            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-indigo-500 mt-8"></div>
+                          </div>
+                        ) : (
+                          editedBox.boxImage &&
                           editedBox.boxImage.trim() !== "" && (
                             <Image
                               className="object-cover"
@@ -216,7 +226,8 @@ export default function MyBoxes() {
                               alt="Box Image"
                               priority
                             />
-                          )}
+                          )
+                        )}
                       </label>
                       <input
                         type="file"
