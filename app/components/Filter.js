@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 export default function Filter({ boxes, setFilteredBoxes }) {
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   function handleFilterByCategory(category) {
     setSelectedCategory(category);
@@ -18,18 +18,26 @@ export default function Filter({ boxes, setFilteredBoxes }) {
     }
   }
 
+  const categories = [
+    "all",
+    ...new Set(boxes.map((box) => box.boxCategory).filter(Boolean)),
+  ];
+
   return (
     <div>
       {/* <label>Filter by category</label> */}
       <label>Filter by category</label>
+
       <select
         value={selectedCategory}
         onChange={(e) => handleFilterByCategory(e.target.value)}
         className="border-2 border-red-300 mt-2 ml-2"
       >
-        <option value="all">All</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
+        {categories.map((category) => (
+          <option key={category} value={category}>
+            {category === "all" ? "" : category}
+          </option>
+        ))}
       </select>
     </div>
   );
