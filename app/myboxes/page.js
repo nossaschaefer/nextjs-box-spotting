@@ -34,6 +34,8 @@ export default function MyBoxes() {
         const res = await fetch("/api/boxes");
         if (!res.ok) throw new Error("Failed to fetch");
         const data = await res.json();
+
+        console.log("fetched boxes:", data);
         setBoxes(data);
       } catch (error) {
         console.error(error);
@@ -157,7 +159,9 @@ export default function MyBoxes() {
         {boxes.map((box) => (
           <div
             key={box._id}
-            className="border p-4 border-violet-500 m-2 rounded bg-white"
+            className={`border p-4 border-violet-500 m-2 rounded ${
+              box.boxColor || "bg-white"
+            }`}
           >
             {/* Editable Box Name */}
             {editBoxId === box._id ? (

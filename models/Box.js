@@ -12,6 +12,7 @@ const BoxSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  boxColor: { type: String },
 });
 
 export default mongoose.models.Box || mongoose.model("Box", BoxSchema);
