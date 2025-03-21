@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Select from "react-select";
 
 export default function AddBoxForm() {
   const { data: session, status } = useSession();
@@ -14,6 +15,16 @@ export default function AddBoxForm() {
   const [boxNotes, setBoxNotes] = useState("");
   const [boxImage, setBoxImage] = useState(null);
   const [fileName, setFileName] = useState("Choose file");
+  const [boxColor, setBoxColor] = useState("");
+
+  const colorOptions = [
+    { value: "bg-blue-200", label: "Blue" },
+    { value: "bg-green-200", label: "Green" },
+    { value: "bg-yellow-200", label: "Yellow" },
+    { value: "bg-purple-200", label: "Purple" },
+    { value: "bg-pink-200", label: "Pink" },
+    { value: "bg-teal-200", label: "Teal" },
+  ];
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,6 +39,7 @@ export default function AddBoxForm() {
         boxCategory,
         boxNotes,
         boxImage,
+        boxColor,
       }),
     });
     if (res.ok) {
@@ -138,6 +150,21 @@ export default function AddBoxForm() {
               onChange={(e) => setBoxNotes(e.target.value)}
             />
 
+            <label htmlFor="boxcolor" className="text-left mt-6">
+              Background Color
+            </label>
+            <Select
+              value={colorOptions.find((option) => option.value === boxColor)}
+              onChange={(selectedOption) => setBoxColor(selectedOption.value)}
+              options={colorOptions}
+              className="text-left mt-2"
+              getOptionLabel={(e) => (
+                <div className={`${e.value} text-black px-4 rounded-md`}>
+                  {e.label}
+                </div>
+              )}
+            />
+
             <button
               className="rounded-sm p-1 bg-emerald-400 mt-6"
               type="submit"
@@ -147,7 +174,7 @@ export default function AddBoxForm() {
           </form>
         </div>
       </div>
-      <div className="mb-20"></div>
+      <div className="mb-40"></div>
     </>
   );
 }
