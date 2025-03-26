@@ -24,12 +24,12 @@ export default function LoginPage() {
     if (res?.error) {
       setError("Invalid credentials");
     } else {
-      router.push("/");
+      router.push("/welcome");
     }
   };
 
   return (
-    <div className="login-form">
+    <div className="login-form  flex flex-col items-center justify-center">
       <h1 className="text-xl text-center mt-8">Login to Box Spotting</h1>
       {error && <p className="error">{error}</p>}
       <form onSubmit={handleLogin} className="flex flex-col m-12">

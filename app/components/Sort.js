@@ -28,11 +28,11 @@ export default function Sort({ filteredBoxes, setFilteredBoxes }) {
   }
 
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex  gap-2 items-baseline justify-center pt-3">
       <label htmlFor="sort">Sort by</label>
       <select
         id="sort"
-        className="border p-1"
+        className="border p-1 rounded"
         value={sortCriteria}
         onChange={handleSortChange}
       >

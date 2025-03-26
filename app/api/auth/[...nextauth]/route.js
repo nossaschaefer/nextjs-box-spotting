@@ -39,6 +39,7 @@ export const authOptions = {
 
       if (dbUser) {
         session.user.id = dbUser._id.toString();
+        session.user.username = dbUser.username;
       }
       return session;
     },

@@ -74,6 +74,9 @@ export default function MyBoxes() {
 
   const cancelDelete = () => {
     setModal({ type: "", visible: false, boxId: null });
+    toggleModal();
+
+    console.log(modal);
   };
 
   function handleEdit(box) {
@@ -152,219 +155,225 @@ export default function MyBoxes() {
   return (
     <>
       <div>
-        <h1 className="text-2xl ml-2 mt-4">{boxes.length} Boxes</h1>
+        <h1 className="text-2xl ml-2 mt-4 flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start">
+          {boxes.length} Boxes
+        </h1>
         {boxes.length === 0 ? (
           <p className="p-2 mt-4">No boxes yet - add a box!</p>
         ) : null}
         {boxes.map((box) => (
           <div
             key={box._id}
-            className={`border p-4 border-violet-500 m-2 rounded ${
-              box.boxColor || "bg-white"
-            }`}
+            className="flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start"
           >
-            {/* Editable Box Name */}
-            {editBoxId === box._id ? (
-              <div className="flex flex-row items-center">
-                <span className="font-bold pr-2 ">Name</span>
-                <input
-                  type="text"
-                  name="boxName"
-                  value={editedBox.boxName}
-                  onChange={handleChange}
-                  className="border w-full p-1 my-1"
-                />
-              </div>
-            ) : (
-              <div className="flex flex-row justify-between items-center">
-                <h2 className="text-xl text-indigo-500">{box.boxName}</h2>
-                <div className="relative">
-                  <button onClick={() => toggleModal(box._id)}>
-                    <FontAwesomeIcon icon={faEllipsisVertical} />
-                  </button>
+            <div
+              className={`w-80 border p-4 border-violet-500 m-2 rounded ${
+                box.boxColor || "bg-white"
+              }`}
+            >
+              {/* Editable Box Name */}
+              {editBoxId === box._id ? (
+                <div className="flex flex-row items-center">
+                  <span className="font-bold pr-2 ">Name</span>
+                  <input
+                    type="text"
+                    name="boxName"
+                    value={editedBox.boxName}
+                    onChange={handleChange}
+                    className="border w-full p-1 my-1"
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-row justify-between items-center">
+                  <h2 className="text-xl text-indigo-500">{box.boxName}</h2>
+                  <div className="relative">
+                    <button onClick={() => toggleModal(box._id)}>
+                      <FontAwesomeIcon icon={faEllipsisVertical} />
+                    </button>
 
-                  {activeBoxId === box._id && (
-                    <div className="flex flex-col bg-white absolute right-0  p-2 z-10 shadow-lg rounded">
-                      <button
-                        onClick={() => handleEdit(box)}
-                        className="text-black flex flex-row items-center "
+                    {activeBoxId === box._id && !modal.visible && (
+                      <div className="flex flex-col bg-white absolute right-0  p-2 z-10 shadow-lg rounded">
+                        <button
+                          onClick={() => handleEdit(box)}
+                          className="text-black flex flex-row items-center "
+                        >
+                          <FontAwesomeIcon icon={faPencil} className="mr-2" />
+                          Edit
+                        </button>
+                        <DeleteBoxBtn
+                          boxName={box.boxName}
+                          boxId={box._id}
+                          onDelete={() => confirmDelete(box._id)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Editable Image */}
+
+              {editBoxId === box._id ? (
+                <div className="relative overflow-hidden  mb-2 bg-white mt-2 border-2 border-red-400">
+                  <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
+                    <div className="absolute w-full h-full">
+                      <label
+                        htmlFor="fileInput"
+                        className="cursor-pointer w-full h-full block"
                       >
-                        <FontAwesomeIcon icon={faPencil} className="mr-2" />
-                        Edit
-                      </button>
-                      <DeleteBoxBtn
-                        boxName={box.boxName}
-                        boxId={box._id}
-                        onDelete={() => confirmDelete(box._id)}
+                        {isUploading ? (
+                          <div className="flex justify-center items-center">
+                            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-indigo-500 mt-8"></div>
+                          </div>
+                        ) : editedBox.boxImage &&
+                          editedBox.boxImage.trim() !== "" ? (
+                          <Image
+                            className="object-cover"
+                            src={editedBox.boxImage}
+                            fill
+                            alt="Box Image"
+                            priority
+                          />
+                        ) : (
+                          <div className="flex items-center justify-center w-full h-full text-gray-500">
+                            Click to upload an image
+                          </div>
+                        )}
+                      </label>
+                      <input
+                        type="file"
+                        id="fileInput"
+                        accept="image/*"
+                        onChange={handleFileUpload}
+                        className="hidden"
                       />
                     </div>
-                  )}
+                  </div>
                 </div>
-              </div>
-            )}
-
-            {/* Editable Image */}
-
-            {editBoxId === box._id ? (
-              <div className="relative overflow-hidden  mb-2 bg-white mt-2 border-2 border-red-400">
-                <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
-                  <div className="absolute w-full h-full">
-                    <label
-                      htmlFor="fileInput"
-                      className="cursor-pointer w-full h-full block"
-                    >
-                      {isUploading ? (
-                        <div className="flex justify-center items-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-indigo-500 mt-8"></div>
-                        </div>
-                      ) : editedBox.boxImage &&
-                        editedBox.boxImage.trim() !== "" ? (
+              ) : (
+                box.boxImage &&
+                box.boxImage.trim() !== "" && (
+                  <div className="relative overflow-hidden  mb-2 bg-white mt-2 border-2 border-red-400">
+                    <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
+                      <div className="absolute w-full h-full">
                         <Image
                           className="object-cover"
-                          src={editedBox.boxImage}
+                          src={box.boxImage}
                           fill
                           alt="Box Image"
                           priority
                         />
-                      ) : (
-                        <div className="flex items-center justify-center w-full h-full text-gray-500">
-                          Click to upload an image
-                        </div>
-                      )}
-                    </label>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      accept="image/*"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : (
-              box.boxImage &&
-              box.boxImage.trim() !== "" && (
-                <div className="relative overflow-hidden  mb-2 bg-white mt-2 border-2 border-red-400">
-                  <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
-                    <div className="absolute w-full h-full">
-                      <Image
-                        className="object-cover"
-                        src={box.boxImage}
-                        fill
-                        alt="Box Image"
-                        priority
-                      />
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            )}
-
-            {/* Editable Items */}
-            {editBoxId === box._id ? (
-              <div className="flex flex-row items-center">
-                <span className="font-bold pr-2 ">Items</span>
-                <input
-                  type="text"
-                  name="boxItemsInput"
-                  value={editedBox.boxItemsInput || ""}
-                  onChange={handleChange}
-                  className="border w-full p-1 my-1"
-                />
-              </div>
-            ) : (
-              <div
-                className="cursor-pointer mt-1"
-                onClick={() => toggleExpand(box._id)}
-              >
-                <p
-                  className={`truncate ${
-                    expandedBoxes[box._id]
-                      ? "whitespace-normal"
-                      : "whitespace-nowrap overflow-hidden"
-                  }`}
-                >
-                  <span className="font-bold pr-2">Items </span>
-                  {box.boxItems.join(", ")}
-                </p>
-              </div>
-            )}
-
-            {/* Editable Location */}
-            {editBoxId === box._id ? (
-              <div className="flex flex-row items-center">
-                <span className="font-bold pr-2 ">Location</span>
-                <input
-                  type="text"
-                  name="boxLocation"
-                  value={editedBox.boxLocation}
-                  onChange={handleChange}
-                  className="border w-full p-1 my-1"
-                />
-              </div>
-            ) : (
-              <p>
-                <span className="font-bold pr-2">Location</span>{" "}
-                {box.boxLocation}
-              </p>
-            )}
-
-            {/* Editable Category */}
-            {editBoxId === box._id ? (
-              <div className="flex flex-row items-center">
-                <span className="font-bold pr-2 ">Category</span>
-                <input
-                  type="text"
-                  name="boxCategory"
-                  value={editedBox.boxCategory}
-                  onChange={handleChange}
-                  className="border w-full p-1 my-1"
-                />
-              </div>
-            ) : (
-              <p>
-                {" "}
-                <span className="font-bold pr-2">Category</span>{" "}
-                {box.boxCategory}
-              </p>
-            )}
-
-            {/* Editable Notes */}
-            {editBoxId === box._id ? (
-              <div className="flex flex-row items-center">
-                <span className="font-bold pr-2 ">Notes</span>
-                <input
-                  type="text"
-                  name="boxNotes"
-                  value={editedBox.boxNotes}
-                  onChange={handleChange}
-                  className="border w-full p-1 my-1"
-                />
-              </div>
-            ) : (
-              <p>
-                {" "}
-                <span className="font-bold pr-2">Notes</span> {box.boxNotes}
-              </p>
-            )}
-
-            {/* Button: Save (when in edit mode)*/}
-            <div className="flex flex-row justify-end mt-2">
-              {editBoxId === box._id && (
-                <button
-                  onClick={handleSave}
-                  className="bg-green-500 text-white p-2 rounded"
-                >
-                  <FontAwesomeIcon icon={faSave} /> Save
-                </button>
+                )
               )}
+
+              {/* Editable Items */}
+              {editBoxId === box._id ? (
+                <div className="flex flex-row items-center">
+                  <span className="font-bold pr-2 ">Items</span>
+                  <input
+                    type="text"
+                    name="boxItemsInput"
+                    value={editedBox.boxItemsInput || ""}
+                    onChange={handleChange}
+                    className="border w-full p-1 my-1"
+                  />
+                </div>
+              ) : (
+                <div
+                  className="cursor-pointer mt-1"
+                  onClick={() => toggleExpand(box._id)}
+                >
+                  <p
+                    className={`truncate ${
+                      expandedBoxes[box._id]
+                        ? "whitespace-normal"
+                        : "whitespace-nowrap overflow-hidden"
+                    }`}
+                  >
+                    <span className="font-bold pr-2">Items </span>
+                    {box.boxItems.join(", ")}
+                  </p>
+                </div>
+              )}
+
+              {/* Editable Location */}
+              {editBoxId === box._id ? (
+                <div className="flex flex-row items-center">
+                  <span className="font-bold pr-2 ">Location</span>
+                  <input
+                    type="text"
+                    name="boxLocation"
+                    value={editedBox.boxLocation}
+                    onChange={handleChange}
+                    className="border w-full p-1 my-1"
+                  />
+                </div>
+              ) : (
+                <p>
+                  <span className="font-bold pr-2">Location</span>{" "}
+                  {box.boxLocation}
+                </p>
+              )}
+
+              {/* Editable Category */}
+              {editBoxId === box._id ? (
+                <div className="flex flex-row items-center">
+                  <span className="font-bold pr-2 ">Category</span>
+                  <input
+                    type="text"
+                    name="boxCategory"
+                    value={editedBox.boxCategory}
+                    onChange={handleChange}
+                    className="border w-full p-1 my-1"
+                  />
+                </div>
+              ) : (
+                <p>
+                  {" "}
+                  <span className="font-bold pr-2">Category</span>{" "}
+                  {box.boxCategory}
+                </p>
+              )}
+
+              {/* Editable Notes */}
+              {editBoxId === box._id ? (
+                <div className="flex flex-row items-center">
+                  <span className="font-bold pr-2 ">Notes</span>
+                  <input
+                    type="text"
+                    name="boxNotes"
+                    value={editedBox.boxNotes}
+                    onChange={handleChange}
+                    className="border w-full p-1 my-1"
+                  />
+                </div>
+              ) : (
+                <p>
+                  {" "}
+                  <span className="font-bold pr-2">Notes</span> {box.boxNotes}
+                </p>
+              )}
+
+              {/* Button: Save (when in edit mode)*/}
+              <div className="flex flex-row justify-end mt-2">
+                {editBoxId === box._id && (
+                  <button
+                    onClick={handleSave}
+                    className="bg-green-500 text-white p-2 rounded"
+                  >
+                    <FontAwesomeIcon icon={faSave} /> Save
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}
 
         {/* Modals */}
-        {modal.type === "confirm" && (
+        {modal.type === "confirm" && modal.visible && (
           <ConfirmModal
             isOpen={modal.visible}
             onClose={cancelDelete}

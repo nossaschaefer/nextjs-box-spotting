@@ -5,6 +5,7 @@ import TabBar from "./components/TabBar";
 import { SessionProvider } from "next-auth/react";
 import AuthLink from "./components/AuthLink";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Layout({ children }) {
   return (
@@ -15,16 +16,18 @@ export default function Layout({ children }) {
         </head>
         <body className="bg-gray-100 text-gray-900">
           <header className=" bg-violet-800 text-white text-center flex flex-row justify-between items-center">
-            <div className="flex flex-row items-center">
-              <Image
-                src="/logo_c.png"
-                alt="logo"
-                width={70}
-                height={70}
-                className=""
-              />
-              <h1 className="">Box Spotting</h1>
-            </div>
+            <Link href="/welcome">
+              <div className="flex flex-row items-center">
+                <Image
+                  src="/logo_c.png"
+                  alt="logo"
+                  width={70}
+                  height={70}
+                  className=""
+                />
+                <h1 className="">Box Spotting</h1>
+              </div>
+            </Link>
             <AuthLink />
           </header>
           <main className="px-4">{children}</main>

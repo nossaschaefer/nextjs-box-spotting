@@ -37,7 +37,7 @@ export default function SignUp() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center">
       <h1 className="text-xl text-center mt-8">Sign up to Box Spotting</h1>
       <form className="flex flex-col m-12" onSubmit={handleSubmit}>
         <div className="flex flex-col">

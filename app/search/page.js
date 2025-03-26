@@ -46,7 +46,7 @@ export default function Search() {
   }
 
   return (
-    <div className="p-4 mt-4 flex flex-col text-left px-16">
+    <div className="p-4 mt-4 flex flex-col items-center justify-center text-left px-16">
       <label htmlFor="search"></label>
       <input
         placeholder=" Search"
@@ -63,7 +63,7 @@ export default function Search() {
       <div className="mt-4">
         {filteredBoxes.length === 0 ? <p>No results found</p> : null}
         {filteredBoxes.map((box) => (
-          <div key={box._id} className="border p-2 mt-2">
+          <div key={box._id} className="border p-2 mt-2 w-80">
             <h2 className="text-lg font-semibold">{box.boxName}</h2>
             <p>Location: {box.boxLocation}</p>
             <p>Category: {box.boxCategory}</p>

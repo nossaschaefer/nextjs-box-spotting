@@ -24,7 +24,7 @@ export default function Filter({ boxes, setFilteredBoxes }) {
   ];
 
   return (
-    <div>
+    <div className="pt-2">
       {/* <label>Filter by category</label> */}
       <label>Filter by category</label>
 
