@@ -44,7 +44,12 @@ export default function LoginPage() {
           />
         </div>
         <div className="flex flex-col">
-          <label>Password</label>
+          <div className="flex flex-row justify-between items-center">
+            <label>Password</label>
+            <Link className="text-violet-600 text-xs" href="/signup">
+              Forgot your password?
+            </Link>
+          </div>
           <input
             className="border-2 rounded mb-4"
             type="password"
