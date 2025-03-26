@@ -27,6 +27,11 @@ export default function MyBoxes() {
   });
   const [activeBoxId, setActiveBoxId] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [viewMode, setViewMode] = useState("compact");
+
+  const toggleView = () => {
+    setViewMode(viewMode === "compact" ? "detailed" : "compact");
+  };
 
   useEffect(() => {
     async function fetchBoxes() {
@@ -155,9 +160,19 @@ export default function MyBoxes() {
   return (
     <>
       <div>
-        <h1 className="text-2xl ml-2 mt-4 flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start">
-          {boxes.length} Boxes
-        </h1>
+        <div className="flex flex-row justify-center items-center pt-4">
+          <h1 className="text-2xl text-white ml-3  flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start">
+            {boxes.length} Boxes
+          </h1>
+          <button
+            onClick={toggleView}
+            className="bg-indigo-500 text-white px-4 py-2 rounded  align-baseline ml-6"
+          >
+            {viewMode === "compact"
+              ? "Switch to Detailed View"
+              : "Switch to Compact View"}
+          </button>
+        </div>
         {boxes.length === 0 ? (
           <p className="p-2 mt-4">No boxes yet - add a box!</p>
         ) : null}
@@ -167,9 +182,7 @@ export default function MyBoxes() {
             className="flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start"
           >
             <div
-              className={`w-80 border p-4 border-violet-500 m-2 rounded ${
-                box.boxColor || "bg-white"
-              }`}
+              className={`w-80  p-4 m-2 rounded ${box.boxColor || "bg-white"}`}
             >
               {/* Editable Box Name */}
               {editBoxId === box._id ? (
@@ -185,7 +198,18 @@ export default function MyBoxes() {
                 </div>
               ) : (
                 <div className="flex flex-row justify-between items-center">
-                  <h2 className="text-xl text-indigo-500">{box.boxName}</h2>
+                  <div className="flex flex-row">
+                    <Image
+                      className=""
+                      src="/logo_bw.svg"
+                      width={30}
+                      height={30}
+                      alt="Box Image"
+                    />
+                    <h2 className="text-xl text-indigo-500 pl-1">
+                      {box.boxName}
+                    </h2>
+                  </div>
                   <div className="relative">
                     <button onClick={() => toggleModal(box._id)}>
                       <FontAwesomeIcon icon={faEllipsisVertical} />
@@ -214,7 +238,7 @@ export default function MyBoxes() {
               {/* Editable Image */}
 
               {editBoxId === box._id ? (
-                <div className="relative overflow-hidden  mb-2 bg-white mt-2 border-2 border-red-400">
+                <div className="relative overflow-hidden  mb-2 bg-white mt-2">
                   <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
                     <div className="absolute w-full h-full">
                       <label
@@ -223,12 +247,12 @@ export default function MyBoxes() {
                       >
                         {isUploading ? (
                           <div className="flex justify-center items-center">
-                            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-indigo-500 mt-8"></div>
+                            <div className="animate-spin rounded-full h-8 w-8 mt-8"></div>
                           </div>
                         ) : editedBox.boxImage &&
                           editedBox.boxImage.trim() !== "" ? (
                           <Image
-                            className="object-cover"
+                            className="object-cover rounded-sm"
                             src={editedBox.boxImage}
                             fill
                             alt="Box Image"
@@ -252,12 +276,13 @@ export default function MyBoxes() {
                 </div>
               ) : (
                 box.boxImage &&
-                box.boxImage.trim() !== "" && (
-                  <div className="relative overflow-hidden  mb-2 bg-white mt-2 border-2 border-red-400">
+                box.boxImage.trim() !== "" &&
+                viewMode === "detailed" && (
+                  <div className="relative overflow-hidden  mb-2 bg-white mt-2 ">
                     <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
                       <div className="absolute w-full h-full">
                         <Image
-                          className="object-cover"
+                          className="object-cover rounded-sm"
                           src={box.boxImage}
                           fill
                           alt="Box Image"
@@ -282,21 +307,23 @@ export default function MyBoxes() {
                   />
                 </div>
               ) : (
-                <div
-                  className="cursor-pointer mt-1"
-                  onClick={() => toggleExpand(box._id)}
-                >
-                  <p
-                    className={`truncate ${
-                      expandedBoxes[box._id]
-                        ? "whitespace-normal"
-                        : "whitespace-nowrap overflow-hidden"
-                    }`}
+                viewMode === "detailed" && (
+                  <div
+                    className="cursor-pointer mt-1"
+                    onClick={() => toggleExpand(box._id)}
                   >
-                    <span className="font-bold pr-2">Items </span>
-                    {box.boxItems.join(", ")}
-                  </p>
-                </div>
+                    <p
+                      className={`truncate ${
+                        expandedBoxes[box._id]
+                          ? "whitespace-normal"
+                          : "whitespace-nowrap overflow-hidden"
+                      }`}
+                    >
+                      <span className="font-bold pr-2">Items </span>
+                      {box.boxItems.join(", ")}
+                    </p>
+                  </div>
+                )
               )}
 
               {/* Editable Location */}
@@ -312,10 +339,12 @@ export default function MyBoxes() {
                   />
                 </div>
               ) : (
-                <p>
-                  <span className="font-bold pr-2">Location</span>{" "}
-                  {box.boxLocation}
-                </p>
+                viewMode === "detailed" && (
+                  <p>
+                    <span className="font-bold pr-2">Location</span>{" "}
+                    {box.boxLocation}
+                  </p>
+                )
               )}
 
               {/* Editable Category */}
@@ -331,11 +360,13 @@ export default function MyBoxes() {
                   />
                 </div>
               ) : (
-                <p>
-                  {" "}
-                  <span className="font-bold pr-2">Category</span>{" "}
-                  {box.boxCategory}
-                </p>
+                viewMode === "detailed" && (
+                  <p>
+                    {" "}
+                    <span className="font-bold pr-2">Category</span>{" "}
+                    {box.boxCategory}
+                  </p>
+                )
               )}
 
               {/* Editable Notes */}
@@ -351,10 +382,12 @@ export default function MyBoxes() {
                   />
                 </div>
               ) : (
-                <p>
-                  {" "}
-                  <span className="font-bold pr-2">Notes</span> {box.boxNotes}
-                </p>
+                viewMode === "detailed" && (
+                  <p>
+                    {" "}
+                    <span className="font-bold pr-2">Notes</span> {box.boxNotes}
+                  </p>
+                )
               )}
 
               {/* Button: Save (when in edit mode)*/}

@@ -85,7 +85,7 @@ export default function AddBoxForm() {
         <div className="flex flex-col gap-1 min-w-80">
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col border-2 border-blue-500 p-2 rounded mt-4"
+            className="flex flex-col  p-3 rounded mt-4 bg-sky-50"
           >
             <label htmlFor="boxname" className="text-left  mt-6">
               Box Name

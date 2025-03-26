@@ -19,29 +19,29 @@ function LayoutContent({ children }) {
   const { data: session } = useSession();
 
   return (
-    <html lang="en">
+    <html lang="en" className="bg-sky-900">
       <head>
         <link rel="icon" href="/icon.ico" sizes="any" priority={false} />
       </head>
       <body className="bg-gray-100 text-gray-900">
-        <header className=" bg-violet-800 text-white text-center flex flex-row justify-between items-center">
+        <header className=" bg-lime-100 text-black text-center flex flex-row justify-between items-center sticky top-0 z-50">
           {/* Change link based on login state */}
           <Link href={session ? "/welcome" : "/"}>
             <div className="flex flex-row items-center">
               <Image
-                src="/logo_c.png"
+                src="/logo_bw.svg"
                 alt="logo"
                 width={70}
                 height={70}
                 className=""
               />
-              <h1 className="">Box Spotting</h1>
+              <h1 className="font-semibold">Box Spotting</h1>
             </div>
           </Link>
           <AuthLink />
         </header>
-        <main className="px-4">{children}</main>
-        <TabBar />
+        <main className="px-4 bg-sky-900">{children}</main>
+        {session && <TabBar />}
       </body>
     </html>
   );
