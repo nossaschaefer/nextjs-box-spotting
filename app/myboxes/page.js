@@ -10,6 +10,7 @@ import { faSave } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import ConfirmModal from "../components/ConfirmModal";
 import SuccessModal from "../components/SuccessModal";
+import { FaList, FaThLarge } from "react-icons/fa";
 
 export default function MyBoxes() {
   const { data: session, status } = useSession();
@@ -28,6 +29,15 @@ export default function MyBoxes() {
   const [activeBoxId, setActiveBoxId] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [viewMode, setViewMode] = useState("compact");
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openImage = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const closeImage = () => {
+    setSelectedImage(null);
+  };
 
   const toggleView = () => {
     setViewMode(viewMode === "compact" ? "detailed" : "compact");
@@ -159,18 +169,26 @@ export default function MyBoxes() {
 
   return (
     <>
-      <div>
-        <div className="flex flex-row justify-center items-center pt-4">
-          <h1 className="text-2xl text-white ml-3  flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start">
+      <div className="flex flex-col items-start w-80 mx-auto">
+        <div className="flex flex-row justify-between items-center pt-4 w-full">
+          <h1 className="text-xl text-black ml-2  flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start">
             {boxes.length} Boxes
           </h1>
           <button
             onClick={toggleView}
-            className="bg-indigo-500 text-white px-4 py-2 rounded  align-baseline ml-6"
+            className=" text-black  py-2 rounded  align-baseline "
           >
-            {viewMode === "compact"
-              ? "Switch to Detailed View"
-              : "Switch to Compact View"}
+            {viewMode === "compact" ? (
+              <div className="flex flex-row">
+                <FaThLarge size={18} className=" text-gray-300" />
+                <FaList size={18} className="ml-2" />
+              </div>
+            ) : (
+              <div className="flex flex-row">
+                <FaThLarge size={18} className="" />
+                <FaList size={18} className="ml-2  text-gray-300" />
+              </div>
+            )}
           </button>
         </div>
         {boxes.length === 0 ? (
@@ -179,10 +197,12 @@ export default function MyBoxes() {
         {boxes.map((box) => (
           <div
             key={box._id}
-            className="flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start"
+            className=" flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start"
           >
             <div
-              className={`w-80  p-4 m-2 rounded ${box.boxColor || "bg-white"}`}
+              className={`w-80  p-3 m-2 shadow-md rounded-2xl ${
+                box.boxColor || "bg-white"
+              }`}
             >
               {/* Editable Box Name */}
               {editBoxId === box._id ? (
@@ -193,20 +213,13 @@ export default function MyBoxes() {
                     name="boxName"
                     value={editedBox.boxName}
                     onChange={handleChange}
-                    className="border w-full p-1 my-1"
+                    className="border w-full p-1 my-1 "
                   />
                 </div>
               ) : (
                 <div className="flex flex-row justify-between items-center">
-                  <div className="flex flex-row">
-                    <Image
-                      className=""
-                      src="/logo_bw.svg"
-                      width={30}
-                      height={30}
-                      alt="Box Image"
-                    />
-                    <h2 className="text-xl text-indigo-500 pl-1">
+                  <div className="flex flex-row ">
+                    <h2 className="text-lg text-black font-semibold pl-1">
                       {box.boxName}
                     </h2>
                   </div>
@@ -278,7 +291,10 @@ export default function MyBoxes() {
                 box.boxImage &&
                 box.boxImage.trim() !== "" &&
                 viewMode === "detailed" && (
-                  <div className="relative overflow-hidden  mb-2 bg-white mt-2 ">
+                  <div
+                    className="relative overflow-hidden  mb-2 bg-white mt-2 cursor-pointer"
+                    onClick={() => openImage(box.boxImage)}
+                  >
                     <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
                       <div className="absolute w-full h-full">
                         <Image
@@ -313,13 +329,13 @@ export default function MyBoxes() {
                     onClick={() => toggleExpand(box._id)}
                   >
                     <p
-                      className={`truncate ${
+                      className={` truncate ${
                         expandedBoxes[box._id]
                           ? "whitespace-normal"
                           : "whitespace-nowrap overflow-hidden"
                       }`}
                     >
-                      <span className="font-bold pr-2">Items </span>
+                      <span className="font-bold pr-2 text-sm">Items </span>
                       {box.boxItems.join(", ")}
                     </p>
                   </div>
@@ -341,7 +357,7 @@ export default function MyBoxes() {
               ) : (
                 viewMode === "detailed" && (
                   <p>
-                    <span className="font-bold pr-2">Location</span>{" "}
+                    <span className="font-bold pr-2 text-sm">Location</span>{" "}
                     {box.boxLocation}
                   </p>
                 )
@@ -363,7 +379,9 @@ export default function MyBoxes() {
                 viewMode === "detailed" && (
                   <p>
                     {" "}
-                    <span className="font-bold pr-2">Category</span>{" "}
+                    <span className="font-bold pr-2 text-sm">
+                      Category
+                    </span>{" "}
                     {box.boxCategory}
                   </p>
                 )
@@ -383,9 +401,9 @@ export default function MyBoxes() {
                 </div>
               ) : (
                 viewMode === "detailed" && (
-                  <p>
-                    {" "}
-                    <span className="font-bold pr-2">Notes</span> {box.boxNotes}
+                  <p className="text-xs">
+                    <span className="font-bold pr-2 text-xs">Notes</span>
+                    {box.boxNotes}
                   </p>
                 )
               )}

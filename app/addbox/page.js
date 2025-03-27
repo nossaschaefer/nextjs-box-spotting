@@ -18,12 +18,11 @@ export default function AddBoxForm() {
   const [boxColor, setBoxColor] = useState("");
 
   const colorOptions = [
+    { value: "bg-lime-300", label: "Lime" },
+    { value: "bg-rose-300", label: "Rose" },
+    { value: "bg-slate-300", label: "Slate" },
     { value: "bg-blue-200", label: "Blue" },
-    { value: "bg-green-200", label: "Green" },
-    { value: "bg-yellow-200", label: "Yellow" },
-    { value: "bg-purple-200", label: "Purple" },
-    { value: "bg-pink-200", label: "Pink" },
-    { value: "bg-teal-200", label: "Teal" },
+    { value: "bg-white", label: "White" },
   ];
 
   async function handleSubmit(e) {
@@ -85,7 +84,7 @@ export default function AddBoxForm() {
         <div className="flex flex-col gap-1 min-w-80">
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col  p-3 rounded mt-4 bg-sky-50"
+            className="flex flex-col  p-3 rounded-xl mt-4 bg-blue-200"
           >
             <label htmlFor="boxname" className="text-left  mt-6">
               Box Name
@@ -93,7 +92,7 @@ export default function AddBoxForm() {
             <input
               value={boxName}
               onChange={(e) => setBoxName(e.target.value)}
-              className="border-2 border-gray-200  px-4"
+              className="rounded-md px-4"
               required
             />
 
@@ -103,7 +102,7 @@ export default function AddBoxForm() {
             <label className="cursor-pointer border-2 border-gray-200  px-4 min-w-48 bg-white overflow-hidden text-ellipsis title={filename} whitespace-nowrap">
               {fileName}
               <input
-                className="border-2 border-gray-200 
+                className="rounded-md
          file:text-sm file:font-semibold file:text-blue-700 hidden"
                 type="file"
                 onChange={handleImgUpload}
@@ -118,7 +117,7 @@ export default function AddBoxForm() {
               onChange={(e) => setBoxItems(e.target.value)}
               placeholder="Items (comma separated)"
               required
-              className="border-2 border-gray-200 px-4"
+              className="rounded-md px-4"
             />
 
             <label htmlFor="boxlocation" className="text-left mt-6">
@@ -127,7 +126,7 @@ export default function AddBoxForm() {
             <input
               value={boxLocation}
               onChange={(e) => setBoxLocation(e.target.value)}
-              className="border-2 border-gray-200  px-4"
+              className="rounded-md  px-4"
             />
 
             <label htmlFor="boxcategory" className="text-left mt-6">
@@ -135,7 +134,7 @@ export default function AddBoxForm() {
             </label>
             <input
               type="text"
-              className="border-2 border-gray-200  px-4"
+              className="rounded-md  px-4"
               value={boxCategory}
               onChange={(e) => setBoxCategory(e.target.value)}
             />
@@ -145,7 +144,7 @@ export default function AddBoxForm() {
             </label>
             <input
               type="text"
-              className="border-2 border-gray-200  px-4"
+              className="rounded-md  px-4"
               value={boxNotes}
               onChange={(e) => setBoxNotes(e.target.value)}
             />
@@ -157,7 +156,7 @@ export default function AddBoxForm() {
               value={colorOptions.find((option) => option.value === boxColor)}
               onChange={(selectedOption) => setBoxColor(selectedOption.value)}
               options={colorOptions}
-              className="text-left mt-2"
+              className="text-left mt-2 "
               getOptionLabel={(e) => (
                 <div className={`${e.value} text-black px-4 rounded-md`}>
                   {e.label}
@@ -165,10 +164,7 @@ export default function AddBoxForm() {
               )}
             />
 
-            <button
-              className="rounded-sm p-1 bg-emerald-400 mt-6"
-              type="submit"
-            >
+            <button className="rounded-md p-1 bg-lime-200 mt-6" type="submit">
               Add Box
             </button>
           </form>

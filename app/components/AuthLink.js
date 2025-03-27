@@ -16,7 +16,7 @@ export default function AuthLink() {
     );
   } else {
     return (
-      <Link className="text-white pr-4 text-sm" href="/login">
+      <Link className="text-black pr-4 text-sm mr-3" href="/login">
         Log in
       </Link>
     );

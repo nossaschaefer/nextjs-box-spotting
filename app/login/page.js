@@ -36,7 +36,7 @@ export default function LoginPage() {
         <div className="flex flex-col">
           <label>Email</label>
           <input
-            className="border-2 rounded mb-4"
+            className="border-2 rounded-md mb-4"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -46,12 +46,12 @@ export default function LoginPage() {
         <div className="flex flex-col">
           <div className="flex flex-row justify-between items-center">
             <label>Password</label>
-            <Link className="text-violet-600 text-xs" href="/signup">
+            <Link className="text-blue-500 text-xs" href="/signup">
               Forgot your password?
             </Link>
           </div>
           <input
-            className="border-2 rounded mb-4"
+            className="border-2 rounded-md mb-4"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -59,14 +59,14 @@ export default function LoginPage() {
           />
         </div>
         <button
-          className="border-2 border-violet-600 mt-4 rounded"
+          className="border-2 border-blue-500 rounded-md mt-4 "
           type="submit"
         >
-          Login
+          Log in
         </button>
         <div className="flex flex-row text-xs mt-8 justify-center">
           <p className="mr-1">New to Box Spotting?</p>
-          <Link className="text-violet-600" href="/signup">
+          <Link className="text-blue-500" href="/signup">
             Create an account
           </Link>
         </div>
