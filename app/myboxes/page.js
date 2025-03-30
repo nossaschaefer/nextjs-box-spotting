@@ -215,7 +215,7 @@ export default function MyBoxes() {
                 </div>
               ) : (
                 <>
-                  <div className="flex flex-row justify-between items-center">
+                  <div className="flex flex-row justify-between items-center relative">
                     <h2 className=" text-base text-black font-semibold  ">
                       {box.boxName}
                     </h2>
@@ -225,7 +225,7 @@ export default function MyBoxes() {
                     </button>
                   </div>
                   {activeBoxId === box._id && !modal.visible && (
-                    <div className="flex flex-col bg-white absolute right-0  p-2 z-10 shadow-lg rounded">
+                    <div className="flex flex-col bg-white absolute ml-52 p-3 z-10 shadow-lg rounded">
                       <button
                         onClick={() => handleEdit(box)}
                         className="text-black flex flex-row items-center "
