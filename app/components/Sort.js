@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 export default function Sort({ filteredBoxes, setFilteredBoxes }) {
-  const [isAscending, setIsAscending] = useState(false);
-  const [sortCriteria, setSortCriteria] = useState("boxName");
+  const [isAscending, setIsAscending] = useState(true);
+  const [sortCriteria, setSortCriteria] = useState("");
 
   function sortBoxes(criteria, isAscending) {
     const sortedBoxes = [...filteredBoxes].sort((a, b) =>
@@ -18,8 +18,11 @@ export default function Sort({ filteredBoxes, setFilteredBoxes }) {
   function handleSortChange(event) {
     const newCriteria = event.target.value;
     setSortCriteria(newCriteria);
-    setIsAscending(false);
-    sortBoxes(newCriteria, false);
+
+    if (newCriteria) {
+      setIsAscending(true);
+      sortBoxes(newCriteria, true);
+    }
   }
 
   function toggleSortOrder() {
@@ -32,20 +35,21 @@ export default function Sort({ filteredBoxes, setFilteredBoxes }) {
       <label htmlFor="sort">Sort by</label>
       <select
         id="sort"
-        className="border p-1 rounded"
+        className=" border-2 border-rose-300  rounded-md bg-white text-sm p-1"
         value={sortCriteria}
         onChange={handleSortChange}
       >
+        <option value=""></option>
         <option value="boxName">Box Name</option>
         <option value="boxCategory">Category</option>
         <option value="boxLocation">Location</option>
       </select>
 
       <button
-        className="border-2 border-red-300 mt-2 ml-2"
+        className="border-2 border-rose-300 rounded mt-2 ml-2 bg-white"
         onClick={toggleSortOrder}
       >
-        {isAscending ? "↑" : "↓"}
+        {isAscending ? "↓" : "↑"}
       </button>
     </div>
   );

@@ -31,7 +31,7 @@ export default function Filter({ boxes, setFilteredBoxes }) {
       <select
         value={selectedCategory}
         onChange={(e) => handleFilterByCategory(e.target.value)}
-        className="border-2 border-red-300 mt-2 ml-2"
+        className="border-2 rounded-md border-rose-300 mt-2 ml-2 bg-white text-sm"
       >
         {categories.map((category) => (
           <option key={category} value={category}>

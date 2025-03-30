@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Sort from "../components/Sort";
 import Filter from "../components/Filter";
+import Image from "next/image";
 
 export default function Search() {
   const { data: session, status } = useSession();
@@ -54,7 +55,7 @@ export default function Search() {
         type="text"
         value={search}
         onChange={handleSearch}
-        className="border-2  border-blue-500 rounded placeholder:text-gray-400 mt-2"
+        className="border-2  border-blue-500 rounded-md placeholder:text-gray-400 mt-2 px-3"
       />
 
       <Sort filteredBoxes={filteredBoxes} setFilteredBoxes={setFilteredBoxes} />
@@ -63,15 +64,39 @@ export default function Search() {
       <div className="mt-4">
         {filteredBoxes.length === 0 ? <p>No results found</p> : null}
         {filteredBoxes.map((box) => (
-          <div key={box._id} className="border p-2 mt-2 w-80">
+          <div
+            key={box._id}
+            className={`w-80  p-3 m-2 shadow-md rounded-2xl ${
+              box.boxColor || "bg-white"
+            }`}
+          >
             <h2 className="text-lg font-semibold">{box.boxName}</h2>
-            <p>Location: {box.boxLocation}</p>
-            <p>Category: {box.boxCategory}</p>
-            <p>
-              Items:{" "}
+            {box.boxImage && box.boxImage.trim() !== "" && (
+              <div className="relative flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
+                <Image
+                  className="object-cover rounded-sm  mt-1"
+                  src={box.boxImage}
+                  fill
+                  alt="Box Image"
+                  priority
+                />
+              </div>
+            )}
+            <p className="text-sm mt-1">
+              <span className="font-bold "> Items:</span>{" "}
               {Array.isArray(box.boxItems)
                 ? box.boxItems.join(", ")
                 : box.boxItems}
+            </p>
+            <p className="text-sm">
+              {" "}
+              <span className="font-bold ">Location:</span> {box.boxLocation}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold ">Category:</span> {box.boxCategory}
+            </p>
+            <p className="text-sm">
+              <span className="font-bold ">Notes:</span> {box.boxNotes}
             </p>
           </div>
         ))}

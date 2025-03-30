@@ -73,7 +73,7 @@ export default function SignUp() {
         </div>
         {error && <p>{error}</p>}
         <button
-          className="border-2 border-violet-600 mt-4 rounded"
+          className="border-2 border-blue-500 rounded-md mt-4 "
           type="submit"
         >
           Sign up

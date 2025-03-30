@@ -195,12 +195,9 @@ export default function MyBoxes() {
           <p className="p-2 mt-4">No boxes yet - add a box!</p>
         ) : null}
         {boxes.map((box) => (
-          <div
-            key={box._id}
-            className=" flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start"
-          >
+          <>
             <div
-              className={`w-80  p-3 m-2 shadow-md rounded-2xl ${
+              className={`w-80  p-3 m-1 shadow-md rounded-2xl ${
                 box.boxColor || "bg-white"
               }`}
             >
@@ -217,35 +214,33 @@ export default function MyBoxes() {
                   />
                 </div>
               ) : (
-                <div className="flex flex-row justify-between items-center">
-                  <div className="flex flex-row ">
-                    <h2 className="text-lg text-black font-semibold pl-1">
+                <>
+                  <div className="flex flex-row justify-between items-center">
+                    <h2 className=" text-base text-black font-semibold  ">
                       {box.boxName}
                     </h2>
-                  </div>
-                  <div className="relative">
+
                     <button onClick={() => toggleModal(box._id)}>
                       <FontAwesomeIcon icon={faEllipsisVertical} />
                     </button>
-
-                    {activeBoxId === box._id && !modal.visible && (
-                      <div className="flex flex-col bg-white absolute right-0  p-2 z-10 shadow-lg rounded">
-                        <button
-                          onClick={() => handleEdit(box)}
-                          className="text-black flex flex-row items-center "
-                        >
-                          <FontAwesomeIcon icon={faPencil} className="mr-2" />
-                          Edit
-                        </button>
-                        <DeleteBoxBtn
-                          boxName={box.boxName}
-                          boxId={box._id}
-                          onDelete={() => confirmDelete(box._id)}
-                        />
-                      </div>
-                    )}
                   </div>
-                </div>
+                  {activeBoxId === box._id && !modal.visible && (
+                    <div className="flex flex-col bg-white absolute right-0  p-2 z-10 shadow-lg rounded">
+                      <button
+                        onClick={() => handleEdit(box)}
+                        className="text-black flex flex-row items-center "
+                      >
+                        <FontAwesomeIcon icon={faPencil} className="mr-2" />
+                        Edit
+                      </button>
+                      <DeleteBoxBtn
+                        boxName={box.boxName}
+                        boxId={box._id}
+                        onDelete={() => confirmDelete(box._id)}
+                      />
+                    </div>
+                  )}
+                </>
               )}
 
               {/* Editable Image */}
@@ -329,7 +324,7 @@ export default function MyBoxes() {
                     onClick={() => toggleExpand(box._id)}
                   >
                     <p
-                      className={` truncate ${
+                      className={`text-sm truncate ${
                         expandedBoxes[box._id]
                           ? "whitespace-normal"
                           : "whitespace-nowrap overflow-hidden"
@@ -356,7 +351,7 @@ export default function MyBoxes() {
                 </div>
               ) : (
                 viewMode === "detailed" && (
-                  <p>
+                  <p className="text-sm">
                     <span className="font-bold pr-2 text-sm">Location</span>{" "}
                     {box.boxLocation}
                   </p>
@@ -377,7 +372,7 @@ export default function MyBoxes() {
                 </div>
               ) : (
                 viewMode === "detailed" && (
-                  <p>
+                  <p className="text-sm">
                     {" "}
                     <span className="font-bold pr-2 text-sm">
                       Category
@@ -401,8 +396,8 @@ export default function MyBoxes() {
                 </div>
               ) : (
                 viewMode === "detailed" && (
-                  <p className="text-xs">
-                    <span className="font-bold pr-2 text-xs">Notes</span>
+                  <p className="text-sm">
+                    <span className="font-bold pr-2 text-sm">Notes</span>
                     {box.boxNotes}
                   </p>
                 )
@@ -413,14 +408,14 @@ export default function MyBoxes() {
                 {editBoxId === box._id && (
                   <button
                     onClick={handleSave}
-                    className="bg-green-500 text-white p-2 rounded"
+                    className="bg-lime-200 text-black p-2 rounded-md"
                   >
                     <FontAwesomeIcon icon={faSave} /> Save
                   </button>
                 )}
               </div>
             </div>
-          </div>
+          </>
         ))}
 
         {/* Modals */}

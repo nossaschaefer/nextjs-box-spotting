@@ -8,13 +8,13 @@ export default function ConfirmModal({ onConfirm, onClose }) {
         <div className="flex justify-around">
           <button
             onClick={onConfirm}
-            className="bg-red-500 text-white px-4 py-2 rounded-md"
+            className="bg-rose-300 text-black px-4 py-2 rounded-md"
           >
             Yes
           </button>
           <button
             onClick={onClose}
-            className="bg-gray-500 text-white px-4 py-2 rounded-md"
+            className="bg-slate-300 text-black px-4 py-2 rounded-md"
           >
             No
           </button>

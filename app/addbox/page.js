@@ -81,12 +81,12 @@ export default function AddBoxForm() {
   return (
     <>
       <div className="flex  justify-center h-[calc(100vh-4rem)] ">
-        <div className="flex flex-col gap-1 min-w-80">
+        <div className="flex flex-col gap-1 min-w-80 text-sm">
           <form
             onSubmit={handleSubmit}
             className="flex flex-col  p-3 rounded-xl mt-4 bg-blue-200"
           >
-            <label htmlFor="boxname" className="text-left  mt-6">
+            <label htmlFor="boxname" className="text-left  mt-6 ">
               Box Name
             </label>
             <input
@@ -96,20 +96,20 @@ export default function AddBoxForm() {
               required
             />
 
-            <label className="text-left mt-6" htmlFor="">
+            <label className="text-left mt-6" htmlFor="addFoto">
               Add Photo
             </label>
-            <label className="cursor-pointer border-2 border-gray-200  px-4 min-w-48 bg-white overflow-hidden text-ellipsis title={filename} whitespace-nowrap">
+            <label className="cursor-pointer rounded-md  px-4 min-w-48 bg-white overflow-hidden text-ellipsis title={filename} whitespace-nowrap">
               {fileName}
               <input
-                className="rounded-md
+                className="
          file:text-sm file:font-semibold file:text-blue-700 hidden"
                 type="file"
                 onChange={handleImgUpload}
               />
             </label>
 
-            <label htmlFor="boxitems" className="text-left mt-6">
+            <label htmlFor="boxitems" className=" text-left mt-6">
               New Item
             </label>
             <input
@@ -120,7 +120,7 @@ export default function AddBoxForm() {
               className="rounded-md px-4"
             />
 
-            <label htmlFor="boxlocation" className="text-left mt-6">
+            <label htmlFor="boxlocation" className="text-left mt-6 ">
               Location
             </label>
             <input
@@ -129,7 +129,7 @@ export default function AddBoxForm() {
               className="rounded-md  px-4"
             />
 
-            <label htmlFor="boxcategory" className="text-left mt-6">
+            <label htmlFor="boxcategory" className="text-left mt-6 ">
               Category
             </label>
             <input
@@ -139,7 +139,7 @@ export default function AddBoxForm() {
               onChange={(e) => setBoxCategory(e.target.value)}
             />
 
-            <label htmlFor="boxnotes" className="text-left mt-6">
+            <label htmlFor="boxnotes" className="text-left mt-6 text-sm">
               Notes
             </label>
             <input
@@ -156,9 +156,9 @@ export default function AddBoxForm() {
               value={colorOptions.find((option) => option.value === boxColor)}
               onChange={(selectedOption) => setBoxColor(selectedOption.value)}
               options={colorOptions}
-              className="text-left mt-2 "
+              className="text-left"
               getOptionLabel={(e) => (
-                <div className={`${e.value} text-black px-4 rounded-md`}>
+                <div className={`${e.value} text-black px-4 rounded-md `}>
                   {e.label}
                 </div>
               )}

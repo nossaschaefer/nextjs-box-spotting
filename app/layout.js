@@ -6,6 +6,9 @@ import { SessionProvider, useSession } from "next-auth/react";
 import AuthLink from "./components/AuthLink";
 import Image from "next/image";
 import Link from "next/link";
+import { Montserrat } from "next/font/google";
+
+const montse = Montserrat({ subsets: ["latin"], weight: ["400", "700"] });
 
 export default function Layout({ children }) {
   return (
@@ -23,7 +26,7 @@ function LayoutContent({ children }) {
       <head>
         <link rel="icon" href="/icon.ico" sizes="any" priority={false} />
       </head>
-      <body className="bg-gray-100 text-gray-900">
+      <body className={`bg-gray-100 ${montse.className}`}>
         <header className=" bg-blue-200 text-black text-center flex flex-row justify-between items-center sticky top-0 z-50 shadow-md">
           {/* Change link based on login state */}
           <Link href={session ? "/welcome" : "/"}>
