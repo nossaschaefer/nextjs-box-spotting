@@ -169,9 +169,9 @@ export default function MyBoxes() {
 
   return (
     <>
-      <div className="flex flex-col items-start w-80 mx-auto">
+      <div className="flex flex-col items-center w-80 mx-auto">
         <div className="flex flex-row justify-between items-center pt-4 w-full">
-          <h1 className="text-xl text-black ml-2  flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start">
+          <h1 className="text-xl text-black   flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start">
             {boxes.length} Boxes
           </h1>
           <button
@@ -197,7 +197,7 @@ export default function MyBoxes() {
         {boxes.map((box) => (
           <>
             <div
-              className={`w-80  p-3 m-1 shadow-md rounded-2xl ${
+              className={`w-80 p-1  px-3 m-1 shadow-md rounded-2xl ${
                 box.boxColor || "bg-white"
               }`}
             >
@@ -215,12 +215,15 @@ export default function MyBoxes() {
                 </div>
               ) : (
                 <>
-                  <div className="flex flex-row justify-between items-center relative">
-                    <h2 className=" text-base text-black font-semibold  ">
+                  <div className="flex flex-row justify-between items-center relative ">
+                    <h2 className=" text-base text-black font-semibold mt-2 ">
                       {box.boxName}
                     </h2>
 
-                    <button onClick={() => toggleModal(box._id)}>
+                    <button
+                      className="mt-2"
+                      onClick={() => toggleModal(box._id)}
+                    >
                       <FontAwesomeIcon icon={faEllipsisVertical} />
                     </button>
                   </div>
