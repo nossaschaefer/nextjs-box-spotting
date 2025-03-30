@@ -24,14 +24,14 @@ export default function Filter({ boxes, setFilteredBoxes }) {
   ];
 
   return (
-    <div className="pt-2">
+    <div className="pt-2 flex flex-row items-baseline">
       {/* <label>Filter by category</label> */}
-      <label>Filter by category</label>
+      <label className="text-sm">Filter by category</label>
 
       <select
         value={selectedCategory}
         onChange={(e) => handleFilterByCategory(e.target.value)}
-        className="border-2 rounded-md border-rose-300 mt-2 ml-2 bg-white text-sm"
+        className="border-2 rounded-md border-rose-300 mt-2 pl-1 ml-2 bg-white text-sm"
       >
         {categories.map((category) => (
           <option key={category} value={category}>

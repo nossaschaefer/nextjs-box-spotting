@@ -47,7 +47,7 @@ export default function Search() {
   }
 
   return (
-    <div className="p-4 pt-4 flex flex-col items-center justify-center text-left px-16">
+    <div className="p-4 pt-4 flex flex-col items-center justify-center text-left">
       <label htmlFor="search"></label>
       <input
         placeholder=" Search"

@@ -31,11 +31,13 @@ export default function Sort({ filteredBoxes, setFilteredBoxes }) {
   }
 
   return (
-    <div className="flex  gap-2 items-baseline justify-center pt-3">
-      <label htmlFor="sort">Sort by</label>
+    <div className="flex flex-row items-center justify-center pt-3">
+      <label className="text-sm self-end" htmlFor="sort">
+        Sort by
+      </label>
       <select
         id="sort"
-        className=" border-2 border-rose-300  rounded-md bg-white text-sm p-1"
+        className=" border-2 border-rose-300  rounded-md bg-white text-sm ml-2 pl-1 self-end"
         value={sortCriteria}
         onChange={handleSortChange}
       >
@@ -46,7 +48,7 @@ export default function Sort({ filteredBoxes, setFilteredBoxes }) {
       </select>
 
       <button
-        className="border-2 border-rose-300 rounded mt-2 ml-2 bg-white"
+        className="border-2 border-rose-300 rounded mt-2 ml-2 bg-white "
         onClick={toggleSortOrder}
       >
         {isAscending ? "↓" : "↑"}
