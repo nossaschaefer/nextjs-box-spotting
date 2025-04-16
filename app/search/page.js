@@ -70,7 +70,7 @@ export default function Search() {
               box.boxColor || "bg-white"
             }`}
           >
-            <h2 className="text-lg font-semibold">{box.boxName}</h2>
+            <h2 className="text-base font-semibold">{box.boxName}</h2>
             {box.boxImage && box.boxImage.trim() !== "" && (
               <div className="relative flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
                 <Image

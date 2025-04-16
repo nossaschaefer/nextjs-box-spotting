@@ -11,13 +11,13 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import ConfirmModal from "../components/ConfirmModal";
 import SuccessModal from "../components/SuccessModal";
 import { FaList, FaThLarge } from "react-icons/fa";
+import BoxEditForm from "../components/BoxEditForm";
 
 export default function MyBoxes() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
   const [boxes, setBoxes] = useState([]);
-  const [expandedBoxes, setExpandedbox] = useState({});
   const [editBoxId, setEditBoxId] = useState(null);
   const [editedBox, setEditedBox] = useState({});
   const [modal, setModal] = useState({
@@ -100,6 +100,7 @@ export default function MyBoxes() {
   }
 
   function handleChange(e) {
+    console.log("handleChange called");
     setEditedBox({ ...editedBox, [e.target.name]: e.target.value });
   }
 
@@ -120,13 +121,6 @@ export default function MyBoxes() {
       setEditBoxId(null);
     }
     setActiveBoxId(null);
-  }
-
-  function toggleExpand(boxId) {
-    setExpandedbox((prev) => ({
-      ...prev,
-      [boxId]: !prev[boxId],
-    }));
   }
 
   async function handleFileUpload(e) {
@@ -197,22 +191,20 @@ export default function MyBoxes() {
         {boxes.map((box) => (
           <>
             <div
+              key={box._id}
               className={`w-80 p-1  px-3 m-1 shadow-md rounded-2xl ${
                 box.boxColor || "bg-white"
               }`}
             >
               {/* Editable Box Name */}
               {editBoxId === box._id ? (
-                <div className="flex flex-row items-center">
-                  <span className="font-bold pr-2 ">Name</span>
-                  <input
-                    type="text"
-                    name="boxName"
-                    value={editedBox.boxName}
-                    onChange={handleChange}
-                    className="border w-full p-1 my-1 "
-                  />
-                </div>
+                <BoxEditForm
+                  editedBox={editedBox}
+                  onChange={handleChange}
+                  onClick={handleSave}
+                  isUploading={isUploading}
+                  onFileChange={handleFileUpload}
+                />
               ) : (
                 <>
                   <div className="flex flex-row justify-between items-center relative ">
@@ -243,167 +235,69 @@ export default function MyBoxes() {
                       />
                     </div>
                   )}
-                </>
-              )}
 
-              {/* Editable Image */}
+                  {/* Image */}
 
-              {editBoxId === box._id ? (
-                <div className="relative overflow-hidden  mb-2 bg-white mt-2">
-                  <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
-                    <div className="absolute w-full h-full">
-                      <label
-                        htmlFor="fileInput"
-                        className="cursor-pointer w-full h-full block"
+                  {box.boxImage &&
+                    box.boxImage.trim() !== "" &&
+                    viewMode === "detailed" && (
+                      <div
+                        className="relative overflow-hidden  mb-2 bg-white mt-2 cursor-pointer"
+                        onClick={() => openImage(box.boxImage)}
                       >
-                        {isUploading ? (
-                          <div className="flex justify-center items-center">
-                            <div className="animate-spin rounded-full h-8 w-8 mt-8"></div>
+                        <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
+                          <div className="absolute w-full h-full">
+                            <Image
+                              className="object-cover rounded-sm"
+                              src={box.boxImage}
+                              fill
+                              alt="Box Image"
+                              priority
+                            />
                           </div>
-                        ) : editedBox.boxImage &&
-                          editedBox.boxImage.trim() !== "" ? (
-                          <Image
-                            className="object-cover rounded-sm"
-                            src={editedBox.boxImage}
-                            fill
-                            alt="Box Image"
-                            priority
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center w-full h-full text-gray-500">
-                            Click to upload an image
-                          </div>
-                        )}
-                      </label>
-                      <input
-                        type="file"
-                        id="fileInput"
-                        accept="image/*"
-                        onChange={handleFileUpload}
-                        className="hidden"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                box.boxImage &&
-                box.boxImage.trim() !== "" &&
-                viewMode === "detailed" && (
-                  <div
-                    className="relative overflow-hidden  mb-2 bg-white mt-2 cursor-pointer"
-                    onClick={() => openImage(box.boxImage)}
-                  >
-                    <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
-                      <div className="absolute w-full h-full">
-                        <Image
-                          className="object-cover rounded-sm"
-                          src={box.boxImage}
-                          fill
-                          alt="Box Image"
-                          priority
-                        />
+                        </div>
                       </div>
+                    )}
+
+                  {/* Items */}
+                  {viewMode === "detailed" && (
+                    <div className="text-sm">
+                      <p>
+                        <span className="font-bold pr-2">Items </span>
+                        {box.boxItems.join(", ")}
+                      </p>
                     </div>
-                  </div>
-                )
-              )}
+                  )}
 
-              {/* Editable Items */}
-              {editBoxId === box._id ? (
-                <div className="flex flex-row items-center">
-                  <span className="font-bold pr-2 ">Items</span>
-                  <input
-                    type="text"
-                    name="boxItemsInput"
-                    value={editedBox.boxItemsInput || ""}
-                    onChange={handleChange}
-                    className="border w-full p-1 my-1"
-                  />
-                </div>
-              ) : (
-                viewMode === "detailed" && (
-                  <div
-                    className="cursor-pointer mt-1"
-                    onClick={() => toggleExpand(box._id)}
-                  >
-                    <p
-                      className={`text-sm truncate ${
-                        expandedBoxes[box._id]
-                          ? "whitespace-normal"
-                          : "whitespace-nowrap overflow-hidden"
-                      }`}
-                    >
-                      <span className="font-bold pr-2 text-sm">Items </span>
-                      {box.boxItems.join(", ")}
+                  {/* Location */}
+                  {viewMode === "detailed" && (
+                    <p className="text-sm">
+                      <span className="font-bold pr-2 text-sm">Location</span>{" "}
+                      {box.boxLocation}
                     </p>
-                  </div>
-                )
-              )}
+                  )}
 
-              {/* Editable Location */}
-              {editBoxId === box._id ? (
-                <div className="flex flex-row items-center">
-                  <span className="font-bold pr-2 ">Location</span>
-                  <input
-                    type="text"
-                    name="boxLocation"
-                    value={editedBox.boxLocation}
-                    onChange={handleChange}
-                    className="border w-full p-1 my-1"
-                  />
-                </div>
-              ) : (
-                viewMode === "detailed" && (
-                  <p className="text-sm">
-                    <span className="font-bold pr-2 text-sm">Location</span>{" "}
-                    {box.boxLocation}
-                  </p>
-                )
-              )}
+                  {/* Category */}
+                  {viewMode === "detailed" && (
+                    <p className="text-sm">
+                      {" "}
+                      <span className="font-bold pr-2 text-sm">
+                        Category
+                      </span>{" "}
+                      {box.boxCategory}
+                    </p>
+                  )}
 
-              {/* Editable Category */}
-              {editBoxId === box._id ? (
-                <div className="flex flex-row items-center">
-                  <span className="font-bold pr-2 ">Category</span>
-                  <input
-                    type="text"
-                    name="boxCategory"
-                    value={editedBox.boxCategory}
-                    onChange={handleChange}
-                    className="border w-full p-1 my-1"
-                  />
-                </div>
-              ) : (
-                viewMode === "detailed" && (
-                  <p className="text-sm">
-                    {" "}
-                    <span className="font-bold pr-2 text-sm">
-                      Category
-                    </span>{" "}
-                    {box.boxCategory}
-                  </p>
-                )
-              )}
+                  {/* Notes */}
+                  {viewMode === "detailed" && (
+                    <p className="text-sm">
+                      <span className="font-bold pr-2 text-sm">Notes</span>
+                      {box.boxNotes}
+                    </p>
+                  )}
 
-              {/* Editable Notes */}
-              {editBoxId === box._id ? (
-                <div className="flex flex-row items-center">
-                  <span className="font-bold pr-2 ">Notes</span>
-                  <input
-                    type="text"
-                    name="boxNotes"
-                    value={editedBox.boxNotes}
-                    onChange={handleChange}
-                    className="border w-full p-1 my-1"
-                  />
-                </div>
-              ) : (
-                viewMode === "detailed" && (
-                  <p className="text-sm">
-                    <span className="font-bold pr-2 text-sm">Notes</span>
-                    {box.boxNotes}
-                  </p>
-                )
+                  {/* BG color */}
+                </>
               )}
 
               {/* Button: Save (when in edit mode)*/}
