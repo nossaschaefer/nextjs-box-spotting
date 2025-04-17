@@ -2,16 +2,10 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import DeleteBoxBtn from "../components/DeleteBoxBtn";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import { faSave } from "@fortawesome/free-solid-svg-icons";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import ConfirmModal from "../components/ConfirmModal";
 import SuccessModal from "../components/SuccessModal";
 import { FaList, FaThLarge } from "react-icons/fa";
-import BoxEditForm from "../components/BoxEditForm";
+import BoxDetails from "../components/BoxDetails";
 
 export default function MyBoxes() {
   const { data: session, status } = useSession();
@@ -189,130 +183,22 @@ export default function MyBoxes() {
           <p className="p-2 mt-4">No boxes yet - add a box!</p>
         ) : null}
         {boxes.map((box) => (
-          <>
-            <div
-              key={box._id}
-              className={`w-80 p-1  px-3 m-1 shadow-md rounded-2xl ${
-                box.boxColor || "bg-white"
-              }`}
-            >
-              {/* Editable Box Name */}
-              {editBoxId === box._id ? (
-                <BoxEditForm
-                  editedBox={editedBox}
-                  onChange={handleChange}
-                  onClick={handleSave}
-                  isUploading={isUploading}
-                  onFileChange={handleFileUpload}
-                />
-              ) : (
-                <>
-                  <div className="flex flex-row justify-between items-center relative ">
-                    <h2 className=" text-base text-black font-semibold mt-2 ">
-                      {box.boxName}
-                    </h2>
-
-                    <button
-                      className="mt-2"
-                      onClick={() => toggleModal(box._id)}
-                    >
-                      <FontAwesomeIcon icon={faEllipsisVertical} />
-                    </button>
-                  </div>
-                  {activeBoxId === box._id && !modal.visible && (
-                    <div className="flex flex-col bg-white absolute ml-52 p-3 z-10 shadow-lg rounded">
-                      <button
-                        onClick={() => handleEdit(box)}
-                        className="text-black flex flex-row items-center "
-                      >
-                        <FontAwesomeIcon icon={faPencil} className="mr-2" />
-                        Edit
-                      </button>
-                      <DeleteBoxBtn
-                        boxName={box.boxName}
-                        boxId={box._id}
-                        onDelete={() => confirmDelete(box._id)}
-                      />
-                    </div>
-                  )}
-
-                  {/* Image */}
-
-                  {box.boxImage &&
-                    box.boxImage.trim() !== "" &&
-                    viewMode === "detailed" && (
-                      <div
-                        className="relative overflow-hidden  mb-2 bg-white mt-2 cursor-pointer"
-                        onClick={() => openImage(box.boxImage)}
-                      >
-                        <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
-                          <div className="absolute w-full h-full">
-                            <Image
-                              className="object-cover rounded-sm"
-                              src={box.boxImage}
-                              fill
-                              alt="Box Image"
-                              priority
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                  {/* Items */}
-                  {viewMode === "detailed" && (
-                    <div className="text-sm">
-                      <p>
-                        <span className="font-bold pr-2">Items </span>
-                        {box.boxItems.join(", ")}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Location */}
-                  {viewMode === "detailed" && (
-                    <p className="text-sm">
-                      <span className="font-bold pr-2 text-sm">Location</span>{" "}
-                      {box.boxLocation}
-                    </p>
-                  )}
-
-                  {/* Category */}
-                  {viewMode === "detailed" && (
-                    <p className="text-sm">
-                      {" "}
-                      <span className="font-bold pr-2 text-sm">
-                        Category
-                      </span>{" "}
-                      {box.boxCategory}
-                    </p>
-                  )}
-
-                  {/* Notes */}
-                  {viewMode === "detailed" && (
-                    <p className="text-sm">
-                      <span className="font-bold pr-2 text-sm">Notes</span>
-                      {box.boxNotes}
-                    </p>
-                  )}
-
-                  {/* BG color */}
-                </>
-              )}
-
-              {/* Button: Save (when in edit mode)*/}
-              <div className="flex flex-row justify-end mt-2">
-                {editBoxId === box._id && (
-                  <button
-                    onClick={handleSave}
-                    className="bg-lime-200 text-black p-2 rounded-md"
-                  >
-                    <FontAwesomeIcon icon={faSave} /> Save
-                  </button>
-                )}
-              </div>
-            </div>
-          </>
+          <BoxDetails
+            key={box._id}
+            box={box}
+            isEditing={editBoxId === box._id}
+            editedBox={editedBox}
+            onEdit={handleEdit}
+            onSave={handleSave}
+            onChange={handleChange}
+            onFileChange={handleFileUpload}
+            isUploading={isUploading}
+            onDelete={confirmDelete}
+            viewMode={viewMode}
+            activeBoxId={activeBoxId}
+            toggleModal={toggleModal}
+            openImage={openImage}
+          />
         ))}
 
         {/* Modals */}
