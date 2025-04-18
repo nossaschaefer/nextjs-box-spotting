@@ -41,6 +41,7 @@ export default function BoxDetails({
         />
       ) : (
         <>
+          {/* Header Section */}
           <div className="flex flex-row justify-between items-center relative ">
             <h2 className=" text-base text-black font-semibold mt-2 ">
               {box.boxName}
@@ -49,6 +50,8 @@ export default function BoxDetails({
               <FontAwesomeIcon icon={faEllipsisVertical} />
             </button>
           </div>
+
+          {/* Action Menu */}
           {activeBoxId === box._id && (
             <div className="flex flex-col bg-white absolute ml-52 p-3 z-10 shadow-lg rounded">
               <button
@@ -65,28 +68,28 @@ export default function BoxDetails({
               />
             </div>
           )}
-          {box.boxImage &&
-            box.boxImage.trim() !== "" &&
-            viewMode === "detailed" && (
-              <div
-                className="relative overflow-hidden  mb-2 bg-white mt-2 cursor-pointer"
-                onClick={() => openImage(box.boxImage)}
-              >
-                <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
-                  <div className="absolute w-full h-full">
-                    <Image
-                      className="object-cover rounded-sm"
-                      src={box.boxImage}
-                      fill
-                      alt="Box Image"
-                      priority
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
+
+          {/* Detailed View */}
           {viewMode === "detailed" && (
             <>
+              {box.boxImage && box.boxImage.trim() !== "" && (
+                <div
+                  className="relative overflow-hidden  mb-2 bg-white mt-2 cursor-pointer"
+                  onClick={() => openImage(box.boxImage)}
+                >
+                  <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
+                    <div className="absolute w-full h-full">
+                      <Image
+                        className="object-cover rounded-sm"
+                        src={box.boxImage}
+                        fill
+                        alt="Box Image"
+                        priority
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="text-sm">
                 <p>
                   <span className="font-bold pr-2">Items </span>
@@ -111,7 +114,6 @@ export default function BoxDetails({
           )}
         </>
       )}
-
       {/* Button: Save (when in edit mode)*/}
       <div className="flex flex-row justify-end mt-2">
         {isEditing && (

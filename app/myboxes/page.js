@@ -154,6 +154,13 @@ export default function MyBoxes() {
     router.push("/login");
     return null;
   }
+  if (boxes.length === 0) {
+    return (
+      <div className="flex flex-col items-center w-80 mx-auto">
+        <p className="p-2 mt-4">No boxes yet - add a box!</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -179,9 +186,6 @@ export default function MyBoxes() {
             )}
           </button>
         </div>
-        {boxes.length === 0 ? (
-          <p className="p-2 mt-4">No boxes yet - add a box!</p>
-        ) : null}
         {boxes.map((box) => (
           <BoxDetails
             key={box._id}
