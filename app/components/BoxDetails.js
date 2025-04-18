@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -24,6 +24,18 @@ export default function BoxDetails({
   toggleModal,
   openImage,
 }) {
+  const menuRef = useRef(null);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        toggleModal(null);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [toggleModal]);
   return (
     <div
       className={`w-80 p-1  px-3 m-1 shadow-md rounded-2xl ${
@@ -53,7 +65,10 @@ export default function BoxDetails({
 
           {/* Action Menu */}
           {activeBoxId === box._id && (
-            <div className="flex flex-col bg-white absolute ml-52 p-3 z-10 shadow-lg rounded">
+            <div
+              className="flex flex-col bg-white absolute ml-52 p-3 z-10 shadow-lg rounded"
+              ref={menuRef}
+            >
               <button
                 onClick={() => onEdit(box)}
                 className="text-black flex flex-row items-center "
