@@ -20,10 +20,13 @@ export default function BoxDetails({
   isUploading,
   onDelete,
   viewMode,
+  isFocused,
+  onClick,
   activeBoxId,
   toggleModal,
   openImage,
 }) {
+  const shouldShowDetailed = isFocused || viewMode === "detailed";
   const menuRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -54,7 +57,10 @@ export default function BoxDetails({
       ) : (
         <>
           {/* Header Section */}
-          <div className="flex flex-row justify-between items-center relative ">
+          <div
+            className="flex flex-row justify-between items-center relative cursor-pointer"
+            onClick={onClick}
+          >
             <h2 className=" text-base text-black font-semibold mt-2 ">
               {box.boxName}
             </h2>
@@ -85,7 +91,7 @@ export default function BoxDetails({
           )}
 
           {/* Detailed View */}
-          {viewMode === "detailed" && (
+          {shouldShowDetailed && (
             <>
               {box.boxImage && box.boxImage.trim() !== "" && (
                 <div

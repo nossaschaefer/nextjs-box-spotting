@@ -24,6 +24,15 @@ export default function MyBoxes() {
   const [isUploading, setIsUploading] = useState(false);
   const [viewMode, setViewMode] = useState("compact");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [focusedBoxId, setFocusedBoxId] = useState(null);
+
+  const handleBoxClick = (boxId) => {
+    if (focusedBoxId === boxId) {
+      setFocusedBoxId(null);
+    } else {
+      setFocusedBoxId(boxId);
+    }
+  };
 
   const openImage = (imageUrl) => {
     setSelectedImage(imageUrl);
@@ -202,6 +211,8 @@ export default function MyBoxes() {
             activeBoxId={activeBoxId}
             toggleModal={toggleModal}
             openImage={openImage}
+            isFocused={focusedBoxId === box._id}
+            onClick={() => handleBoxClick(box._id)}
           />
         ))}
 
