@@ -134,7 +134,7 @@ export default function BoxDetails({
         {isEditing && (
           <button
             onClick={onSave}
-            className="bg-lime-200 text-black p-2 rounded-md"
+            className="bg-lime-200 text-black p-2 rounded-md mb-2"
           >
             <FontAwesomeIcon icon={faSave} /> Save
           </button>
