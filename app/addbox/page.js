@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "react-select";
 
 export default function AddBoxForm() {
@@ -16,6 +16,26 @@ export default function AddBoxForm() {
   const [boxImage, setBoxImage] = useState(null);
   const [fileName, setFileName] = useState("Choose file");
   const [boxColor, setBoxColor] = useState("");
+  const [suggestedCategories, setSuggestedCategories] = useState([]);
+  const [suggestedLocations, setSuggestedLocations] = useState([]);
+
+  useEffect(() => {
+    async function fetchBoxes() {
+      const res = await fetch("/api/boxes");
+      const data = await res.json();
+
+      const uniqueCats = [
+        ...new Set(data.map((box) => box.boxCategory).filter(Boolean)),
+      ];
+      const uniqueLocs = [
+        ...new Set(data.map((box) => box.boxLocation).filter(Boolean)),
+      ];
+
+      setSuggestedCategories(uniqueCats);
+      setSuggestedLocations(uniqueLocs);
+    }
+    fetchBoxes();
+  }, []);
 
   const colorOptions = [
     { value: "bg-lime-300", label: "Lime" },
@@ -124,20 +144,31 @@ export default function AddBoxForm() {
               Location
             </label>
             <input
+              list="locations"
               value={boxLocation}
               onChange={(e) => setBoxLocation(e.target.value)}
               className="rounded-md  px-4"
             />
+            <datalist id="locations">
+              {suggestedLocations.map((loc, i) => (
+                <option key={i} value={loc} />
+              ))}
+            </datalist>
 
             <label htmlFor="boxcategory" className="text-left mt-6 ">
               Category
             </label>
             <input
-              type="text"
+              list="categories"
               className="rounded-md  px-4"
               value={boxCategory}
               onChange={(e) => setBoxCategory(e.target.value)}
             />
+            <datalist id="categories">
+              {suggestedCategories.map((cat, i) => (
+                <option key={i} value={cat} />
+              ))}
+            </datalist>
 
             <label htmlFor="boxnotes" className="text-left mt-6 text-sm">
               Notes
