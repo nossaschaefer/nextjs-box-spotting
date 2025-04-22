@@ -188,6 +188,33 @@ export default function AddBoxForm() {
               onChange={(selectedOption) => setBoxColor(selectedOption.value)}
               options={colorOptions}
               className="text-left"
+              styles={{
+                control: (baseStyles) => ({
+                  ...baseStyles,
+                  borderRadius: "0.5rem",
+                  minHeight: "2rem",
+                  height: "2rem",
+                  padding: "0 0.25rem",
+                  fontSize: "0.875rem",
+                }),
+                valueContainer: (baseStyles) => ({
+                  ...baseStyles,
+                  padding: "0 0.25rem",
+                }),
+                dropdownIndicator: (baseStyles) => ({
+                  ...baseStyles,
+                  padding: "0",
+                }),
+                option: (baseStyles, state) => ({
+                  ...baseStyles,
+                  backgroundColor: state.isSelected
+                    ? "#f1f5f9"
+                    : baseStyles.backgroundColor,
+                  borderRadius: "0.5rem",
+                  color: "black",
+                  fontSize: "0.875rem",
+                }),
+              }}
               getOptionLabel={(e) => (
                 <div className={`${e.value} text-black px-4 rounded-md `}>
                   {e.label}
