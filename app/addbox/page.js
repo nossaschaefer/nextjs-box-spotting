@@ -119,7 +119,7 @@ export default function AddBoxForm() {
             <label className="text-left mt-6" htmlFor="addFoto">
               Add Photo
             </label>
-            <label className="cursor-pointer rounded-md  px-4 min-w-48 bg-white overflow-hidden text-ellipsis title={filename} whitespace-nowrap">
+            <label className="cursor-pointer rounded-md  px-4 min-w-48 bg-white overflow-hidden text-ellipsis title={filename} whitespace-nowrap text-gray-400">
               {fileName}
               <input
                 className="
@@ -196,6 +196,7 @@ export default function AddBoxForm() {
                   height: "2rem",
                   padding: "0 0.25rem",
                   fontSize: "0.875rem",
+                  border: "none",
                 }),
                 valueContainer: (baseStyles) => ({
                   ...baseStyles,

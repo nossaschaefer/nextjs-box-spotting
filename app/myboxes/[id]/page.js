@@ -3,7 +3,7 @@ async function fetchBox(id) {
   return res.json();
 }
 
-export default async function BoxDetails({ params }) {
+export default async function BoxDisplay({ params }) {
   const box = await fetchBox(params.id);
 
   if (!box) return <p>Box not found</p>;

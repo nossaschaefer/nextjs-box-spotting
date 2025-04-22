@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import ConfirmModal from "../components/ConfirmModal";
 import SuccessModal from "../components/SuccessModal";
 import { FaList, FaThLarge } from "react-icons/fa";
-import BoxDetails from "../components/BoxDetails";
+import BoxDisplay from "../components/BoxDisplay";
+import Image from "next/image";
 
 export default function MyBoxes() {
   const { data: session, status } = useSession();
@@ -196,7 +197,7 @@ export default function MyBoxes() {
           </button>
         </div>
         {boxes.map((box) => (
-          <BoxDetails
+          <BoxDisplay
             key={box._id}
             box={box}
             isEditing={editBoxId === box._id}
@@ -217,6 +218,23 @@ export default function MyBoxes() {
         ))}
 
         {/* Modals */}
+        {selectedImage && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50"
+            onClick={closeImage}
+          >
+            <div className="relative w-[90vw] h-[90vh]">
+              <Image
+                src={selectedImage}
+                alt="Full Size"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+          </div>
+        )}
+
         {modal.type === "confirm" && modal.visible && (
           <ConfirmModal
             isOpen={modal.visible}

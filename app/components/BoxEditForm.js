@@ -26,7 +26,7 @@ export default function BoxEditForm({
           name="boxName"
           value={editedBox.boxName}
           onChange={onChange}
-          className="border w-full p-1 my-1 rounded-md"
+          className=" w-full p-1 my-1 rounded-md"
         />
       </div>
 
@@ -73,7 +73,7 @@ export default function BoxEditForm({
           name="boxItemsInput"
           value={editedBox.boxItemsInput || ""}
           onChange={onChange}
-          className="border w-full p-1 my-1 rounded-md"
+          className=" w-full p-1 my-1 rounded-md"
         />
       </div>
 
@@ -84,7 +84,7 @@ export default function BoxEditForm({
           name="boxLocation"
           value={editedBox.boxLocation}
           onChange={onChange}
-          className="border w-full p-1 my-1 rounded-md"
+          className=" w-full p-1 my-1 rounded-md"
         />
       </div>
 
@@ -95,7 +95,7 @@ export default function BoxEditForm({
           name="boxCategory"
           value={editedBox.boxCategory}
           onChange={onChange}
-          className="border w-full p-1 my-1 rounded-md"
+          className=" w-full p-1 my-1 rounded-md"
         />
       </div>
 
@@ -106,7 +106,7 @@ export default function BoxEditForm({
           name="boxNotes"
           value={editedBox.boxNotes}
           onChange={onChange}
-          className="border w-full p-1 my-1 rounded-md"
+          className=" w-full p-1 my-1 rounded-md"
         />
       </div>
 
@@ -124,6 +124,34 @@ export default function BoxEditForm({
           }
           options={colorOptions}
           className="text-left mt-1 "
+          styles={{
+            control: (baseStyles) => ({
+              ...baseStyles,
+              borderRadius: "0.375rem",
+              minHeight: "2rem",
+              height: "2rem",
+              paddingRight: "2rem",
+              fontSize: "0.875rem",
+              border: "none",
+            }),
+            valueContainer: (baseStyles) => ({
+              ...baseStyles,
+              padding: "0 0.25rem",
+            }),
+            dropdownIndicator: (baseStyles) => ({
+              ...baseStyles,
+              padding: "0",
+            }),
+            option: (baseStyles, state) => ({
+              ...baseStyles,
+              backgroundColor: state.isSelected
+                ? "#f1f5f9"
+                : baseStyles.backgroundColor,
+              borderRadius: "0.5rem",
+              color: "black",
+              fontSize: "0.875rem",
+            }),
+          }}
           getOptionLabel={(e) => (
             <div className={`${e.value} text-black px-4 rounded-md pr-32 `}>
               {e.label}

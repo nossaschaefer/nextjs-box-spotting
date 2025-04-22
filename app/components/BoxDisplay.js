@@ -9,7 +9,7 @@ import {
 import DeleteBoxBtn from "./DeleteBoxBtn";
 import BoxEditForm from "./BoxEditForm";
 
-export default function BoxDetails({
+export default function BoxDisplay({
   box,
   isEditing,
   editedBox,
@@ -57,11 +57,11 @@ export default function BoxDetails({
       ) : (
         <>
           {/* Header Section */}
-          <div
-            className="flex flex-row justify-between items-center relative cursor-pointer"
-            onClick={onClick}
-          >
-            <h2 className=" text-base text-black font-semibold mt-2 ">
+          <div className="flex flex-row justify-between items-center relative">
+            <h2
+              className=" text-base text-black font-semibold mt-2 cursor-pointer"
+              onClick={onClick}
+            >
               {box.boxName}
             </h2>
             <button className="mt-2" onClick={() => toggleModal(box._id)}>
