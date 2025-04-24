@@ -259,7 +259,7 @@ export default function MyBoxes() {
           />
         )}
       </div>
-      <div className="mb-20"></div>
+      <div className="pb-20"></div>
     </>
   );
 }

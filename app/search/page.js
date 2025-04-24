@@ -72,9 +72,9 @@ export default function Search() {
           >
             <h2 className="text-base font-semibold">{box.boxName}</h2>
             {box.boxImage && box.boxImage.trim() !== "" && (
-              <div className="relative flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
+              <div className="relative flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden rounded-md">
                 <Image
-                  className="object-cover rounded-sm  mt-1"
+                  className="object-cover rounded-md  mt-1"
                   src={box.boxImage}
                   fill
                   alt="Box Image"

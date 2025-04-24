@@ -132,12 +132,17 @@ export default function AddBoxForm() {
             <label htmlFor="boxitems" className=" text-left mt-6">
               New Item
             </label>
-            <input
+            <textarea
               value={boxItems}
               onChange={(e) => setBoxItems(e.target.value)}
+              onInput={(e) => {
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
               placeholder="Items (comma separated)"
               required
-              className="rounded-md px-4"
+              className="rounded-md px-4 resize-none overflow-hidden min-h-[1.25rem]"
+              rows={1}
             />
 
             <label htmlFor="boxlocation" className="text-left mt-6 ">
@@ -173,11 +178,16 @@ export default function AddBoxForm() {
             <label htmlFor="boxnotes" className="text-left mt-6 text-sm">
               Notes
             </label>
-            <input
+            <textarea
               type="text"
-              className="rounded-md  px-4"
+              className="rounded-md  px-4 resize-none overflow-hidden min-h-[1.25rem]"
               value={boxNotes}
+              onInput={(e) => {
+                e.target.style.height = "auto";
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
               onChange={(e) => setBoxNotes(e.target.value)}
+              rows={1}
             />
 
             <label htmlFor="boxcolor" className="text-left mt-6">

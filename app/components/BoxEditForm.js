@@ -30,7 +30,7 @@ export default function BoxEditForm({
         />
       </div>
 
-      <div className="relative overflow-hidden  mb-2 bg-white mt-2">
+      <div className="relative overflow-hidden  mb-2 bg-white mt-2  rounded-md">
         <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
           <div className="absolute w-full h-full">
             <label
@@ -43,7 +43,7 @@ export default function BoxEditForm({
                 </div>
               ) : editedBox.boxImage && editedBox.boxImage.trim() !== "" ? (
                 <Image
-                  className="object-cover rounded-sm"
+                  className="object-cover rounded-md"
                   src={editedBox.boxImage}
                   fill
                   alt="Box Image"
@@ -67,7 +67,7 @@ export default function BoxEditForm({
       </div>
 
       <div className="flex flex-row items-center">
-        <span className="font-bold pr-2 ">Items</span>
+        <span className="font-bold pr-2">Items</span>
         <input
           type="text"
           name="boxItemsInput"

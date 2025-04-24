@@ -95,13 +95,13 @@ export default function BoxDisplay({
             <>
               {box.boxImage && box.boxImage.trim() !== "" && (
                 <div
-                  className="relative overflow-hidden  mb-2 bg-white mt-2 cursor-pointer"
+                  className="relative overflow-hidden  mb-2 bg-white mt-2 cursor-pointer  rounded-md"
                   onClick={() => openImage(box.boxImage)}
                 >
-                  <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden">
+                  <div className="flex flex-col min-w-[280px] min-h-[100px]  overflow-hidden ">
                     <div className="absolute w-full h-full">
                       <Image
-                        className="object-cover rounded-sm"
+                        className="object-cover rounded-md"
                         src={box.boxImage}
                         fill
                         alt="Box Image"
