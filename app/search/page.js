@@ -16,15 +16,39 @@ export default function Search() {
 
   useEffect(() => {
     async function fetchBoxes() {
-      const res = await fetch("/api/boxes");
-      if (res.ok) {
-        const data = await res.json();
+      try {
+        const res = await fetch("/api/boxes");
+        if (!res.ok) throw new Error("Failed to fetch");
+        let data = await res.json();
+
+        data = data.map((box, index) => ({
+          ...box,
+          order: box.order !== undefined ? box.order : index,
+        }));
+
+        data.sort((a, b) => a.order - b.order);
+
+        console.log("fetched boxes:", data);
         setBoxes(data);
         setFilteredBoxes(data);
+      } catch (error) {
+        console.error(error);
       }
     }
     fetchBoxes();
   }, []);
+
+  // useEffect(() => {
+  //   async function fetchBoxes() {
+  //     const res = await fetch("/api/boxes");
+  //     if (res.ok) {
+  //       const data = await res.json();
+  //       setBoxes(data);
+  //       setFilteredBoxes(data);
+  //     }
+  //   }
+  //   fetchBoxes();
+  // }, []);
 
   function handleSearch(e) {
     const value = e.target.value.toLowerCase();

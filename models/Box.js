@@ -13,6 +13,10 @@ const BoxSchema = new mongoose.Schema({
     required: true,
   },
   boxColor: { type: String },
+  order: {
+    type: Number,
+    default: 0,
+  },
 });
 
 export default mongoose.models.Box || mongoose.model("Box", BoxSchema);

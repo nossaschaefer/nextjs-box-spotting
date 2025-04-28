@@ -7,6 +7,13 @@ import SuccessModal from "../components/SuccessModal";
 import { FaList, FaThLarge } from "react-icons/fa";
 import BoxDisplay from "../components/BoxDisplay";
 import Image from "next/image";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import SortableBox from "../components/SortableBox";
 
 export default function MyBoxes() {
   const { data: session, status } = useSession();
@@ -26,6 +33,34 @@ export default function MyBoxes() {
   const [viewMode, setViewMode] = useState("compact");
   const [selectedImage, setSelectedImage] = useState(null);
   const [focusedBoxId, setFocusedBoxId] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  async function handleDragEnd(event) {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      const oldIndex = boxes.findIndex((box) => box._id === active.id);
+      const newIndex = boxes.findIndex((box) => box._id === over.id);
+
+      const newBoxes = arrayMove(boxes, oldIndex, newIndex).map(
+        (box, index) => ({ ...box, order: index })
+      );
+
+      setBoxes(newBoxes);
+
+      try {
+        await fetch("/api/boxes/reorder", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(
+            newBoxes.map(({ _id, order }) => ({ _id, order }))
+          ),
+        });
+      } catch (error) {
+        console.error("Failed to save box order:", error);
+      }
+    }
+  }
 
   const handleBoxClick = (boxId) => {
     if (focusedBoxId === boxId) {
@@ -52,10 +87,18 @@ export default function MyBoxes() {
       try {
         const res = await fetch("/api/boxes");
         if (!res.ok) throw new Error("Failed to fetch");
-        const data = await res.json();
+        let data = await res.json();
+
+        data = data.map((box, index) => ({
+          ...box,
+          order: box.order !== undefined ? box.order : index,
+        }));
+
+        data.sort((a, b) => a.order - b.order);
 
         console.log("fetched boxes:", data);
         setBoxes(data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -164,6 +207,11 @@ export default function MyBoxes() {
     router.push("/login");
     return null;
   }
+
+  if (loading) {
+    return <p>Loading boxes...</p>;
+  }
+
   if (boxes.length === 0) {
     return (
       <div className="flex flex-col items-center w-80 mx-auto">
@@ -177,7 +225,7 @@ export default function MyBoxes() {
       <div className="flex flex-col items-center w-80 mx-auto">
         <div className="flex flex-row justify-between items-center pt-4 w-full">
           <h1 className="text-xl text-black   flex flex-col items-center justify-center sm:flex-row sm:items-start,justify-start">
-            {boxes.length} Boxes
+            {boxes.length} {boxes.length === 1 ? "Box" : "Boxes"}
           </h1>
           <button
             onClick={toggleView}
@@ -196,26 +244,36 @@ export default function MyBoxes() {
             )}
           </button>
         </div>
-        {boxes.map((box) => (
-          <BoxDisplay
-            key={box._id}
-            box={box}
-            isEditing={editBoxId === box._id}
-            editedBox={editedBox}
-            onEdit={handleEdit}
-            onSave={handleSave}
-            onChange={handleChange}
-            onFileChange={handleFileUpload}
-            isUploading={isUploading}
-            onDelete={confirmDelete}
-            viewMode={viewMode}
-            activeBoxId={activeBoxId}
-            toggleModal={toggleModal}
-            openImage={openImage}
-            isFocused={focusedBoxId === box._id}
-            onClick={() => handleBoxClick(box._id)}
-          />
-        ))}
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={boxes.map((box) => box._id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {boxes.map((box) => (
+              <SortableBox
+                key={box._id}
+                box={box}
+                isEditing={editBoxId === box._id}
+                editedBox={editedBox}
+                onEdit={handleEdit}
+                onSave={handleSave}
+                onChange={handleChange}
+                onFileChange={handleFileUpload}
+                isUploading={isUploading}
+                onDelete={confirmDelete}
+                viewMode={viewMode}
+                activeBoxId={activeBoxId}
+                toggleModal={toggleModal}
+                openImage={openImage}
+                isFocused={focusedBoxId === box._id}
+                onClick={() => handleBoxClick(box._id)}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
 
         {/* Modals */}
         {selectedImage && (
