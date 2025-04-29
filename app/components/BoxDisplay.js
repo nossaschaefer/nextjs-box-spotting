@@ -20,13 +20,19 @@ export default function BoxDisplay({
   isUploading,
   onDelete,
   viewMode,
+  viewModeForBox,
+  toggleBoxView,
   isFocused,
   onClick,
   activeBoxId,
   toggleModal,
   openImage,
+  boxViewMode,
+  dragListeners,
 }) {
-  const shouldShowDetailed = isFocused || viewMode === "detailed";
+  const shouldShowDetailed =
+    boxViewMode === "detailed" || viewMode === "detailed";
+
   const menuRef = useRef(null);
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -41,10 +47,17 @@ export default function BoxDisplay({
   }, [toggleModal]);
   return (
     <div
-      className={`w-80 p-1  px-3 m-1 shadow-md rounded-2xl ${
+      className={`w-80 pb-1  px-3 m-1 shadow-md rounded-2xl ${
         box.boxColor || "bg-white"
       }`}
     >
+      {/* Thin top drag handle */}
+      <div
+        {...dragListeners}
+        className="h-1 cursor-grab w-full"
+        title="Drag to reorder"
+      />
+
       {/* Editable Box */}
       {isEditing ? (
         <BoxEditForm
@@ -60,11 +73,19 @@ export default function BoxDisplay({
           <div className="flex flex-row justify-between items-center relative">
             <h2
               className=" text-base text-black font-semibold mt-2 cursor-pointer"
-              onClick={onClick}
+              onClick={() => toggleBoxView(box._id)}
             >
               {box.boxName}
             </h2>
-            <button className="mt-2" onClick={() => toggleModal(box._id)}>
+            <button
+              className="mt-2"
+              style={{ pointerEvents: "auto" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("Clicked menu");
+                toggleModal(box._id);
+              }}
+            >
               <FontAwesomeIcon icon={faEllipsisVertical} />
             </button>
           </div>

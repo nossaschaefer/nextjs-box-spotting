@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import ConfirmModal from "../components/ConfirmModal";
 import SuccessModal from "../components/SuccessModal";
 import { FaList, FaThLarge } from "react-icons/fa";
-import BoxDisplay from "../components/BoxDisplay";
 import Image from "next/image";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
@@ -31,6 +30,7 @@ export default function MyBoxes() {
   const [activeBoxId, setActiveBoxId] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [viewMode, setViewMode] = useState("compact");
+  const [viewModeForBox, setViewModeForBox] = useState({});
   const [selectedImage, setSelectedImage] = useState(null);
   const [focusedBoxId, setFocusedBoxId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,25 +42,32 @@ export default function MyBoxes() {
       const oldIndex = boxes.findIndex((box) => box._id === active.id);
       const newIndex = boxes.findIndex((box) => box._id === over.id);
 
-      const newBoxes = arrayMove(boxes, oldIndex, newIndex).map(
-        (box, index) => ({ ...box, order: index })
-      );
+      const movedBoxes = arrayMove(boxes, oldIndex, newIndex);
 
-      setBoxes(newBoxes);
+      const updatedBoxes = movedBoxes.map((box, index) => {
+        box.order = index;
+        return box;
+      });
+
+      setBoxes(updatedBoxes);
 
       try {
         await fetch("/api/boxes/reorder", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(
-            newBoxes.map(({ _id, order }) => ({ _id, order }))
+            updatedBoxes.map(({ _id, order }) => ({ _id, order }))
           ),
         });
       } catch (error) {
         console.error("Failed to save box order:", error);
       }
     }
+    setFocusedBoxId(active.id);
   }
+
+  console.log("focusedBoxId after drag:", focusedBoxId);
+  console.log("boxes after drag:", boxes);
 
   const handleBoxClick = (boxId) => {
     if (focusedBoxId === boxId) {
@@ -82,6 +89,13 @@ export default function MyBoxes() {
     setViewMode(viewMode === "compact" ? "detailed" : "compact");
   };
 
+  const toggleBoxView = (boxId) => {
+    setViewModeForBox((prevState) => ({
+      ...prevState,
+      [boxId]: prevState[boxId] === "compact" ? "detailed" : "compact",
+    }));
+  };
+
   useEffect(() => {
     async function fetchBoxes() {
       try {
@@ -92,6 +106,7 @@ export default function MyBoxes() {
         data = data.map((box, index) => ({
           ...box,
           order: box.order !== undefined ? box.order : index,
+          viewMode: box.viewMode || "compact",
         }));
 
         data.sort((a, b) => a.order - b.order);
@@ -265,6 +280,9 @@ export default function MyBoxes() {
                 isUploading={isUploading}
                 onDelete={confirmDelete}
                 viewMode={viewMode}
+                boxViewMode={viewModeForBox[box._id]}
+                toggleBoxView={toggleBoxView}
+                currentViewMode={viewModeForBox[box._id] || viewMode}
                 activeBoxId={activeBoxId}
                 toggleModal={toggleModal}
                 openImage={openImage}
