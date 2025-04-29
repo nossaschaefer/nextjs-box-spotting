@@ -27,6 +27,7 @@ export default function BoxEditForm({
           value={editedBox.boxName}
           onChange={onChange}
           className=" w-full p-1 my-1 rounded-md"
+          maxLength={24}
         />
       </div>
 

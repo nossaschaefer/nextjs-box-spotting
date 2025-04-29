@@ -114,6 +114,7 @@ export default function AddBoxForm() {
               onChange={(e) => setBoxName(e.target.value)}
               className="rounded-md px-4"
               required
+              maxLength={24}
             />
 
             <label className="text-left mt-6" htmlFor="addFoto">
