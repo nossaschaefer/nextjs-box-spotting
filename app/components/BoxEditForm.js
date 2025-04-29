@@ -51,7 +51,13 @@ export default function BoxEditForm({
                   priority
                 />
               ) : (
-                <div className="flex items-center justify-center w-full h-full text-gray-500">
+                <div
+                  className={`flex items-center justify-center w-full h-full text-gray-500 ${
+                    editedBox.boxColor === "bg-white"
+                      ? "border border-gray-200 rounded-md"
+                      : ""
+                  }`}
+                >
                   Click to upload an image
                 </div>
               )}
@@ -124,7 +130,11 @@ export default function BoxEditForm({
             })
           }
           options={colorOptions}
-          className="text-left mt-1 "
+          className={`text-left mt-1 ${
+            editedBox.boxColor === "bg-white"
+              ? "border border-gray-200 rounded-md"
+              : ""
+          }`}
           styles={{
             control: (baseStyles) => ({
               ...baseStyles,
@@ -133,7 +143,8 @@ export default function BoxEditForm({
               height: "2rem",
               paddingRight: "2rem",
               fontSize: "0.875rem",
-              border: "none",
+              border:
+                editedBox.boxColor === "bg-white" ? "1px solid #ccc" : "none",
             }),
             valueContainer: (baseStyles) => ({
               ...baseStyles,
