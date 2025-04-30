@@ -26,7 +26,7 @@ export async function DELETE(req, { params }) {
 
     if (box.boxImage) {
       try {
-        const fileName = box.boxImage.split("/").slice(-1).join();
+        const fileName = box.boxImage.split("/").slice(-2).join("/");
         const publicId = fileName.slice(0, fileName.lastIndexOf("."));
         console.log("Public ID:", publicId);
         cloudinary.uploader
@@ -63,7 +63,7 @@ export async function PUT(req, { params }) {
 
     if (updatedData.boxImage && updatedData.boxImage !== existingBox.boxImage) {
       try {
-        const fileName = existingBox.boxImage.split("/").slice(-1).join();
+        const fileName = existingBox.boxImage.split("/").slice(-2).join("/");
         const publicId = fileName.slice(0, fileName.lastIndexOf("."));
         console.log("Public ID:", publicId);
         cloudinary.uploader

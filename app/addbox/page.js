@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Select from "react-select";
+import imageCompression from "browser-image-compression";
 
 export default function AddBoxForm() {
   const { data: session, status } = useSession();
@@ -74,16 +75,12 @@ export default function AddBoxForm() {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "ml_default");
 
     try {
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/db4c0554x/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
       const data = await res.json();
       setBoxImage(data.secure_url); // Save Cloudinary image URL

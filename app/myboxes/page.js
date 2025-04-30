@@ -193,16 +193,12 @@ export default function MyBoxes() {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "ml_default");
 
     try {
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/db4c0554x/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
 
       const data = await res.json();
       setEditedBox((prev) => ({ ...prev, boxImage: data.secure_url }));
